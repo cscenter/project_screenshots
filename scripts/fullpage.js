@@ -3,6 +3,7 @@ const devices   = require('puppeteer/DeviceDescriptors');
 const fs        = require('fs')
 
 const screenshot_extension = ".png";
+// you may find the list of availible mobile devices here: https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
 // const mobile_device        = devices["Nexus 7"]; // uncomment this line to take a mobile screenshot
 const fixed_resolution     = {"width": 1280,"height": 2000} // uncomment this line to scroll to the end of the page before taking the screenshot
 
@@ -45,8 +46,8 @@ puppeteer.launch().then((browser) => {
           }
       }
 
-      await browser.close();
       console.log("Stopping browser...");
+      await browser.close();
     })();
   }, (exception) => {
     console.log("Exception while loading page", exception);

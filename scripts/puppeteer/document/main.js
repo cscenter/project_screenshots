@@ -51,7 +51,7 @@ puppeteer.launch().then((browser) => {
             const file_name = output_directory_name + "/" + output_file_prefix;
             try {
               // page.goto docs: https://github.com/GoogleChrome/puppeteer/blob/v1.1.1/docs/api.md#pagegotourl-options
-              await page.goto(url);
+              await page.goto(url, {"waitUntil": "networkidle0"});
               await page.screenshot({path: file_name + "_fullpage_" + screenshot_extension , fullPage: true});
               const documents = await page.$$("[data-cid]");
               var cnt = 0;

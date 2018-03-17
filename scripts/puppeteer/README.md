@@ -14,6 +14,6 @@ Run: ```node fullpage.js```
 
 Same as fullpage/main.js, but aborts request of each image request
 
-## document/no_images.js
+## document/main.js
 
 Same as fullpage/main.js, but additionally stores the screenshots of each document (element with data-cid attribute) of the page.

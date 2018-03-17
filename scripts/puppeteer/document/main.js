@@ -6,8 +6,9 @@ const screenshot_extension  = ".png";
 const output_directory_name = "puppeteer_out";
 // const mobile_useragent      = "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-A510F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.2704.106 Mobile Safari/537.36"; // uncomment this line to take mobile screenshot
 const fixed_resolution      = {"width": 720,"height": 2500}; // comment this line to scroll to the end of the page before taking the screenshot
+const border_width          = 10;
 
-const urls_list = fs.readFileSync('config/urls_list.txt').toString().split('\n')
+const urls_list = fs.readFileSync('../config/urls_list.txt').toString().split('\n')
 if (!fs.existsSync(output_directory_name)){
     fs.mkdirSync(output_directory_name);
 }
@@ -50,10 +51,22 @@ puppeteer.launch().then((browser) => {
             const file_name = output_directory_name + "/" + output_file_prefix;
             try {
               // page.goto docs: https://github.com/GoogleChrome/puppeteer/blob/v1.1.1/docs/api.md#pagegotourl-options
-              await page.goto(url, {"waitUntil": "networkidle0"});
-              await page.screenshot({path: file_name + screenshot_extension , fullPage: true});
-              const html = await page.content();
-              fs.writeFile(file_name + ".html", html, (exception) => { if (exception) { throw exception; } });
+              await page.goto(url);
+              await page.screenshot({path: file_name + "_fullpage_" + screenshot_extension , fullPage: true});
+              const documents = await page.$$("[data-cid]");
+              var cnt = 0;
+              for (let document of documents) {
+                var box = await document.boundingBox();
+                box.x -= border_width;
+                box.y -= border_width;
+                box.width  += 2 * border_width;
+                box.height += 2 * border_width;
+                await page.screenshot({path: file_name + "_doc" + cnt + "_" + screenshot_extension, clip: box});
+                cnt = cnt + 1;
+                console.log("Capturing document at position", await document.boundingBox(), "...");
+              }
+              // const html = await page.content();
+              // fs.writeFile(file_name + ".html", html, (exception) => { if (exception) { throw exception; } });
             } catch (exception) {
               console.log("Exception occured while taking the snapshot of ", url, ":", exception);
             }

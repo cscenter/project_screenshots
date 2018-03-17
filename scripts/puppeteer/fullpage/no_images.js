@@ -7,7 +7,7 @@ const output_directory_name = "puppeteer_out";
 // const mobile_useragent      = "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-A510F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.2704.106 Mobile Safari/537.36"; // uncomment this line to take mobile screenshot
 const fixed_resolution      = {"width": 720,"height": 2500}; // comment this line to scroll to the end of the page before taking the screenshot
 
-const urls_list = fs.readFileSync('config/urls_list.txt').toString().split('\n')
+const urls_list = fs.readFileSync('../config/urls_list.txt').toString().split('\n')
 if (!fs.existsSync(output_directory_name)){
     fs.mkdirSync(output_directory_name);
 }

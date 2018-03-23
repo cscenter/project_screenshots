@@ -18,3 +18,8 @@ Same as fullpage/main.js, but aborts request of each image request
 ## document/main.js
 
 Same as fullpage/main.js, but additionally stores the screenshots of each document (element with data-cid attribute) of the page.
+
+Включить синтаксис ES6 (лямбды и пр.) можно так https://stackoverflow.com/questions/37382108/how-to-configure-es6-code-inspection
+Для того, чтобы запускать скрипты на ноде, надо установить nodejs плагин.
+Preferences -> Plugins -> Browse Repositories -> ищем NodeJS
+После чего можно будет ПКМ нажимать на .js скриптах и делать Run

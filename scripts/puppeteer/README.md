@@ -8,6 +8,7 @@ Warning: uses png to store screenshots, and as we know, png encoding is a bit sl
 
 Warning: html is obfuscated.
 
+Config: ```npm -i --save puppeteer```
 Run: ```node fullpage.js```
 
 ## fullpage/no_images.js

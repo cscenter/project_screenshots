@@ -13,7 +13,7 @@ if (!fs.existsSync(output_directory_name)){
 }
 
 puppeteer.launch().then((browser) => {
-  console.log("Launching browser...")
+  console.log("Launching browser...");
   browser.newPage().then((page) => {
     console.log("Loading page...");
 

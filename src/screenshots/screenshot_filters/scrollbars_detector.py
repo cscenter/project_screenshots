@@ -62,7 +62,11 @@ class ScrollBarAnalyser(ScreenshotAnalyser):
         maxLineGap = 40
         lines = cv2.HoughLinesP(edges,1,np.pi/180,100,minLineLength,maxLineGap)
         height, width = edges.shape
+        is_scrollbars = False
         if check_if_horizontal(lines, height, width):
             screenshot.result.append("Horizontal scrollbar detected")
+            is_scrollbars = True
         if check_if_vertical(lines, height, width):
             screenshot.result.append("Vertical scrollbar detected")
+            is_scrollbars = True
+        return is_scrollbars

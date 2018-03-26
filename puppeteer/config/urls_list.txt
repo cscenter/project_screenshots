@@ -1,0 +1,4 @@
+https://yandex.ru
+https://yandex.ru/search/?text=заяц
+https://yandex.ru/search/?text=волк
+https://yandex.ru/search/?text=ну%2C%20погоди!

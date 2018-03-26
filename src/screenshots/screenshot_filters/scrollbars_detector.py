@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from screenshot_analyser import ScreenshotAnalyser
+from screenshots.screenshot_filters.screenshot_analyser import ScreenshotAnalyser
 
 # Extract only vertical lines that may be vertical scrollbars
 def vertical_lines(lines, height, width):

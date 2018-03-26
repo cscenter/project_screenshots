@@ -2,7 +2,7 @@ import unittest
 from glob import glob
 import cv2
 from screenshots.screenshot_filters.text_near_edge_detector import TextNearEdgeDetector
-from screenshots.utils.screenshot import Screenshot
+from screenshots.core.screenshot import Screenshot
 
 
 class TestTextNearEdgeDetector(unittest.TestCase):

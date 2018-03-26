@@ -3,8 +3,6 @@
 
 ## project structure description
 * ./data: various datasets, containing images, html or both.
-* ./demos: code for demonstration of the algorithms.
-* ./docs: 
 * ./research: experimental code.
 * ./puppepteer: scripts for puppeteer.
 * ./src: library source root.

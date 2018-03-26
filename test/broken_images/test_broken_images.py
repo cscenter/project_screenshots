@@ -1,5 +1,4 @@
 import unittest
-from glob import glob
 import cv2
 from screenshot_filters.broken_images_detector import BrokenImagesAnalyser
 from utils.screenshot import Screenshot

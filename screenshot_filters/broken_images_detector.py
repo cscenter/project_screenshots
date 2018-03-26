@@ -22,8 +22,9 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
                     x_vals = approx[:, 0, 0]
                     x_vals.sort()
                     y_vals.sort()
-                    base_colour = img[random.randint(y_vals[1] + 5, y_vals[2] - 5)][
-                        random.randint(x_vals[1] + 5, x_vals[2] - 5)]
+                    # Chose the left downside corner of the rectangular as base colour
+                    # for comparision
+                    base_colour = img[y_vals[1] + 5][x_vals[1] + 5]
                     rect = img[y_vals[1] + 5:y_vals[2] - 5, x_vals[1] + 5:x_vals[2] - 5]
                     colour_arr = np.full(rect.shape, base_colour)
                     if (np.all(np.all(rect == colour_arr))):

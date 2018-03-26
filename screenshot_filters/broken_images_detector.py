@@ -27,7 +27,7 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
                     base_colour = img[y_vals[1] + 5][x_vals[1] + 5]
                     rect = img[y_vals[1] + 5:y_vals[2] - 5, x_vals[1] + 5:x_vals[2] - 5]
                     colour_arr = np.full(rect.shape, base_colour)
-                    if (np.all(np.all(rect == colour_arr))):
+                    if np.all(rect == colour_arr):
                         screenshot.result.append("Broken images detected")
                         return True
         return False

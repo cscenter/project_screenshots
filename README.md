@@ -9,5 +9,5 @@
 
 ## running tests
 
-Run ```./run_unit.sh``` in src
+Run ```./run_unit.sh``` in src  
 Run ```./run_regression.sh``` in src

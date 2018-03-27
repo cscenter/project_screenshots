@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from screenshot_analyser import ScreenshotAnalyser
+from screenshots.screenshot_filters.screenshot_analyser import ScreenshotAnalyser
 
 # Extract only vertical lines that may be vertical scrollbars
 def vertical_lines(lines, height, width):
@@ -62,7 +62,11 @@ class ScrollBarAnalyser(ScreenshotAnalyser):
         maxLineGap = 40
         lines = cv2.HoughLinesP(edges,1,np.pi/180,100,minLineLength,maxLineGap)
         height, width = edges.shape
+        is_scrollbars = False
         if check_if_horizontal(lines, height, width):
             screenshot.result.append("Horizontal scrollbar detected")
+            is_scrollbars = True
         if check_if_vertical(lines, height, width):
             screenshot.result.append("Vertical scrollbar detected")
+            is_scrollbars = True
+        return is_scrollbars

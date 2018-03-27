@@ -6,5 +6,5 @@ setup(
     description="Quality of SERP Screenshots",
     packages=['src/screenshots', 'src/screenshots/core', 'src/screenshots/screenshot_filters'],
     install_requires=['numpy', 'opencv-python'],
-    requires=['numpy', 'opencv-python']
+    # requires=['numpy', 'opencv-python']
 )

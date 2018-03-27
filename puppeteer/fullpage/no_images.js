@@ -23,6 +23,7 @@ puppeteer.launch().then((browser) => {
         viewport.width = fixed_resolution.width;
         viewport.height = fixed_resolution.height;
         await page.setViewport(viewport);
+        await page.setCacheEnabled(false);
         console.log("Using resolution", fixed_resolution, " on screenshots");
       } else {
         console.log("Using unbounded resolution (may fail on infinitely scrollable pages)");

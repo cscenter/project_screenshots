@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="screenshot-quality",
-    version="1.0.0",
+    version="1.0.1",
     description="Quality of SERP Screenshots",
     packages=find_packages(),
     install_requires=['numpy', 'opencv-python'],

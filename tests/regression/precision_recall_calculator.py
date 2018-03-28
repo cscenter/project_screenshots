@@ -2,39 +2,39 @@
 
 class PrecisionRecallCalculator:
     def __init__(self, test_name="sample_test"):
-        self.TP = 0.
-        self.TN = 0.
-        self.FP = 0.
-        self.FN = 0.
+        self.true_positive = 0.
+        self.true_negative = 0.
+        self.false_positive = 0.
+        self.false_negative = 0.
         self.test_name = test_name
 
     # expected: bool
     def expected(self, expected):
         return PRProxy(self, expected)
 
-    def add_TP(self):
-        self.TP += 1
+    def add_true_positive(self):
+        self.true_positive += 1
 
-    def add_TN(self):
-        self.TN += 1
+    def add_true_negative(self):
+        self.true_negative += 1
 
-    def add_FP(self):
-        self.FP += 1
+    def add_false_positive(self):
+        self.false_positive += 1
 
-    def add_FN(self):
-        self.FN += 1
+    def add_false_negative(self):
+        self.false_negative += 1
 
     def recall(self):
-        if self.TP + self.FN == 0:
+        if self.true_positive + self.false_negative == 0:
             return -1
         else:
-            return self.TP / (self.TP + self.FN)
+            return self.true_positive / (self.true_positive + self.false_negative)
 
     def precision(self):
-        if self.TP + self.FP == 0:
+        if self.true_positive + self.false_positive == 0:
             return -1
         else:
-            return self.TP / (self.TP + self.FP)
+            return self.true_positive / (self.true_positive + self.false_positive)
 
     def fscore(self):
         p = self.precision()
@@ -51,10 +51,10 @@ class PrecisionRecallCalculator:
         "{0:20s}: {1:.5f}\n".format("Precision: ",        self.precision()) +\
         "{0:20s}: {1:.5f}\n".format("Recall: ",           self.recall()) +\
         "{0:20s}: {1:.5f}\n".format("FScore: ",           self.fscore()) +\
-        "{0:20s}: {1:.5f}\n".format("True positive: ",    self.TP) +\
-        "{0:20s}: {1:.5f}\n".format("True negative: ",    self.TN) +\
-        "{0:20s}: {1:.5f}\n".format("False positive: ",   self.FP) +\
-        "{0:20s}: {1:.5f}\n".format("False negative: ",   self.FN)
+        "{0:20s}: {1:.5f}\n".format("True positive: ", self.true_positive) +\
+        "{0:20s}: {1:.5f}\n".format("True negative: ", self.true_negative) +\
+        "{0:20s}: {1:.5f}\n".format("False positive: ", self.false_positive) +\
+        "{0:20s}: {1:.5f}\n".format("False negative: ", self.false_negative)
 
         return str
 
@@ -69,11 +69,11 @@ class PRProxy:
     def found(self, found):
         if self.expected:
             if found:
-                self.prctor.add_TP()
+                self.prctor.add_true_positive()
             else:
-                self.prctor.add_FN()
+                self.prctor.add_false_negative()
         else:
             if found:
-                self.prctor.add_FP()
+                self.prctor.add_false_positive()
             else:
-                self.prctor.add_TN()
+                self.prctor.add_true_negative()

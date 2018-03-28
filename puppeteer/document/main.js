@@ -13,6 +13,10 @@ if (!fs.existsSync(output_directory_name)){
     fs.mkdirSync(output_directory_name);
 }
 
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 puppeteer.launch().then((browser) => {
   console.log("Launching browser...")
   browser.newPage().then((page) => {
@@ -66,6 +70,7 @@ puppeteer.launch().then((browser) => {
                 box.width  += 2 * border_width;
                 box.height += 2 * border_width;
                 await page.screenshot({path: file_name + "_doc" + cnt + "_" + screenshot_extension, clip: box});
+                await timeout(500);
                 cnt = cnt + 1;
                 console.log("Capturing document at position", await document.boundingBox(), "...");
               }

@@ -8,6 +8,21 @@ from tests import DATA_ROOT
 
 
 class TestRegressionTextNearEdgeDetector(unittest.TestCase):
+    def process_path(self, path, is_positive, detector, pr_calculator):
+        filenames = glob(path + "*.png")
+
+        for filename in filenames:
+            img = cv2.imread(filename)
+            screenshot = Screenshot(img, None, None, None)
+            pr_calculator.expected(is_positive).found(detector.execute(screenshot))
+
+    def process_paths(self, positive_paths, negative_paths, detector, pr_calculator):
+        for path in positive_paths:
+            self.process_path(path, True, detector, pr_calculator)
+
+        for path in negative_paths:
+            self.process_path(path, False, detector, pr_calculator)
+
     def test_fscore_on_desktop_text_documents(self):
         positive_paths = [
             DATA_ROOT + "/document_screenshots_cut/desktop/text/"
@@ -19,20 +34,7 @@ class TestRegressionTextNearEdgeDetector(unittest.TestCase):
 
         pr_calculator = PrecisionRecallCalculator("text near edge: desktop, text")
         dtor = TextNearEdgeDetector()
-        for path in positive_paths:
-            filenames = glob(path + "*.png")
-
-            for filename in filenames:
-                img = cv2.imread(filename)
-                screenshot = Screenshot(img, None, None, None)
-                pr_calculator.expected(True).found(dtor.execute(screenshot))
-
-        for path in negative_paths:
-            filenames = glob(path + "*.png")
-            for filename in filenames:
-                img = cv2.imread(filename)
-                screenshot = Screenshot(img, None, None, None)
-                pr_calculator.expected(False).found(dtor.execute(screenshot))
+        self.process_paths(positive_paths, negative_paths, dtor, pr_calculator)
 
         print(pr_calculator)
         self.assertTrue(pr_calculator.fscore() > .9)
@@ -48,20 +50,7 @@ class TestRegressionTextNearEdgeDetector(unittest.TestCase):
 
         pr_calculator = PrecisionRecallCalculator("text near edge: mobile, text")
         dtor = TextNearEdgeDetector()
-        for path in positive_paths:
-            filenames = glob(path + "*.png")
-
-            for filename in filenames:
-                img = cv2.imread(filename)
-                screenshot = Screenshot(img, None, None, None)
-                pr_calculator.expected(True).found(dtor.execute(screenshot))
-
-        for path in negative_paths:
-            filenames = glob(path + "*.png")
-            for filename in filenames:
-                img = cv2.imread(filename)
-                screenshot = Screenshot(img, None, None, None)
-                pr_calculator.expected(False).found(dtor.execute(screenshot))
+        self.process_paths(positive_paths, negative_paths, dtor, pr_calculator)
 
         print(pr_calculator)
         self.assertTrue(pr_calculator.fscore() > .9)

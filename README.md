@@ -9,4 +9,5 @@
 
 ## running tests
 
-Run ```nosetests``` in repository root
+Run ```./run_unit.sh``` in src  
+Run ```./run_regression.sh``` in src

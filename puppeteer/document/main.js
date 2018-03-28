@@ -57,6 +57,10 @@ puppeteer.launch().then((browser) => {
               var cnt = 0;
               for (let document of documents) {
                 var box = await document.boundingBox();
+                if (!box) {
+                  console.log("Skipping invisible document...");
+                  continue;
+                }
                 box.x -= border_width;
                 box.y -= border_width;
                 box.width  += 2 * border_width;

@@ -1,11 +1,12 @@
 
 
 class PrecisionRecallCalculator:
-    def __init__(self):
-        self.TP = 0
-        self.TN = 0
-        self.FP = 0
-        self.FN = 0
+    def __init__(self, test_name="sample_test"):
+        self.TP = 0.
+        self.TN = 0.
+        self.FP = 0.
+        self.FN = 0.
+        self.test_name = test_name
 
     # expected: bool
     def expected(self, expected):
@@ -43,6 +44,19 @@ class PrecisionRecallCalculator:
         else:
             return 2 * p * r / (p + r)
 
+    def __str__(self):
+        str = \
+        "Statistics for {0}\n".format(self.test_name) +\
+        "-" * len(self.test_name) + "\n" +\
+        "{0:20s}: {1:.5f}\n".format("Precision: ",        self.precision()) +\
+        "{0:20s}: {1:.5f}\n".format("Recall: ",           self.recall()) +\
+        "{0:20s}: {1:.5f}\n".format("FScore: ",           self.fscore()) +\
+        "{0:20s}: {1:.5f}\n".format("True positive: ",    self.TP) +\
+        "{0:20s}: {1:.5f}\n".format("True negative: ",    self.TN) +\
+        "{0:20s}: {1:.5f}\n".format("False positive: ",   self.FP) +\
+        "{0:20s}: {1:.5f}\n".format("False negative: ",   self.FN)
+
+        return str
 
 class PRProxy:
     # prctor: PrecisionRecallCalculator

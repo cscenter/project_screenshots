@@ -26,21 +26,21 @@ class PrecisionRecallCalculator:
 
     def recall(self):
         if self.true_positive + self.false_negative == 0:
-            return -1
+            return None
         else:
             return self.true_positive / (self.true_positive + self.false_negative)
 
     def precision(self):
         if self.true_positive + self.false_positive == 0:
-            return -1
+            return None
         else:
             return self.true_positive / (self.true_positive + self.false_positive)
 
     def fscore(self):
         p = self.precision()
         r = self.recall()
-        if p == -1 or r == -1:
-            return -1
+        if not p or not r:
+            return None
         else:
             return 2 * p * r / (p + r)
 
@@ -57,6 +57,7 @@ class PrecisionRecallCalculator:
         "{0:20s}: {1:.5f}\n".format("False negative: ", self.false_negative)
 
         return str
+
 
 class PRProxy:
     # prctor: PrecisionRecallCalculator

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import cv2
 import numpy as np
-from screenshots.screenshot_filters.screenshot_analyser import ScreenshotAnalyser
+from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 
 
 class TextNearEdgeDetector(ScreenshotAnalyser):

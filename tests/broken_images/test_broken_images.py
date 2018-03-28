@@ -1,7 +1,7 @@
 import unittest
 import cv2
-from screenshots.screenshot_filters.broken_images_detector import BrokenImagesAnalyser
-from screenshots.core.screenshot import Screenshot
+from screenqual.filter.broken_images_detector import BrokenImagesAnalyser
+from screenqual.core.screenshot import Screenshot
 import os
 
 

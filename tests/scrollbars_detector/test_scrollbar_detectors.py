@@ -1,7 +1,7 @@
 import unittest
 import cv2
-from screenshots.screenshot_filters.scrollbars_detector import ScrollBarAnalyser
-from screenshots.core.screenshot import Screenshot
+from screenqual.filter.scrollbars_detector import ScrollBarAnalyser
+from screenqual.core.screenshot import Screenshot
 import os
 
 
@@ -30,6 +30,6 @@ class TestScrollBarAnalyser(unittest.TestCase):
     def test_fires_on_screenshots_with_vertical_and_horizontal_windows_scrollbars(self):
         scrdet = ScrollBarAnalyser()
 
-        img4 = cv2.imread("imgs/with_scrollbars/4.png")
+        img4 = cv2.imread(self.base_path + "/imgs/with_scrollbars/4.png")
         screenshot4 = Screenshot(img4, None, None, [])
         self.assertTrue(scrdet.execute(screenshot4))

@@ -1,8 +1,7 @@
 import unittest
-from glob import glob
 import cv2
-from screenshots.screenshot_filters.text_near_edge_detector import TextNearEdgeDetector
-from screenshots.core.screenshot import Screenshot
+from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
+from screenqual.core.screenshot import Screenshot
 import os
 
 

@@ -1,9 +1,9 @@
 import unittest
 from glob import glob
 import cv2
-from screenshots.screenshot_filters.text_near_edge_detector import TextNearEdgeDetector
-from screenshots.core.screenshot import Screenshot
-from regression.precision_recall_calculator import PrecisionRecallCalculator
+from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
+from screenqual.core.screenshot import Screenshot
+from tests.regression.precision_recall_calculator import PrecisionRecallCalculator
 import os
 
 

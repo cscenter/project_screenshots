@@ -35,6 +35,7 @@ class TestRegressionTextNearEdgeDetector(unittest.TestCase):
                 pr_calculator.expected(False).found(dtor.execute(screenshot))
 
         print(pr_calculator)
+        self.assertTrue(pr_calculator.fscore() > .9)
 
     def test_fscore_on_mobile_text_documents(self):
         positive_paths = [
@@ -63,3 +64,4 @@ class TestRegressionTextNearEdgeDetector(unittest.TestCase):
                 pr_calculator.expected(False).found(dtor.execute(screenshot))
 
         print(pr_calculator)
+        self.assertTrue(pr_calculator.fscore() > .9)

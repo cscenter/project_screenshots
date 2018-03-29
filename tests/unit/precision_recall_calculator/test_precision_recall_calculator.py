@@ -54,3 +54,19 @@ class TestPrecisionRecallCalculator(unittest.TestCase):
         self.assertAlmostEqual(pr_ctor.precision(), p, delta=1e-16)
         self.assertAlmostEqual(pr_ctor.recall(),    r, delta=1e-16)
         self.assertAlmostEqual(pr_ctor.fscore(),    fscore, delta=1e-16)
+
+    def test_pr_ctor_expect_found_interface_works_correctly(self):
+        pr_ctor = PrecisionRecallCalculator()
+        for i in range(71):
+            pr_ctor.expected(True).found(True)
+        for i in range(29):
+            pr_ctor.expected(False).found(True)
+        for i in range(35):
+            pr_ctor.expected(True).found(False)
+        p = 71. / 100
+        r = 71. / 106
+        fscore = 2 * p * r / (p + r)
+
+        self.assertAlmostEqual(pr_ctor.precision(), p, delta=1e-16)
+        self.assertAlmostEqual(pr_ctor.recall(),    r, delta=1e-16)
+        self.assertAlmostEqual(pr_ctor.fscore(),    fscore, delta=1e-16)

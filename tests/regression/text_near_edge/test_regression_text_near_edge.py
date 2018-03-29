@@ -54,3 +54,35 @@ class TestRegressionTextNearEdgeDetector(unittest.TestCase):
 
         print(pr_calculator)
         self.assertTrue(pr_calculator.fscore() > .9)
+
+    def test_fscore_on_desktop_verticals_documents(self):
+        positive_paths = [
+            DATA_ROOT + "/document_screenshots_cut/desktop/verticals/"
+        ]
+
+        negative_paths = [
+            DATA_ROOT + "/document_screenshots/desktop/verticals/"
+        ]
+
+        pr_calculator = PrecisionRecallCalculator("text near edge: desktop, verticals")
+        dtor = TextNearEdgeDetector()
+        self.process_paths(positive_paths, negative_paths, dtor, pr_calculator)
+
+        print(pr_calculator)
+        self.assertTrue(pr_calculator.fscore() > .9)
+
+    def test_fscore_on_mobile_verticals_documents(self):
+        positive_paths = [
+            DATA_ROOT + "/document_screenshots_cut/mobile/verticals/"
+        ]
+
+        negative_paths = [
+            DATA_ROOT + "/document_screenshots/mobile/verticals/"
+        ]
+
+        pr_calculator = PrecisionRecallCalculator("text near edge: mobile, verticals")
+        dtor = TextNearEdgeDetector()
+        self.process_paths(positive_paths, negative_paths, dtor, pr_calculator)
+
+        print(pr_calculator)
+        self.assertTrue(pr_calculator.fscore() > .9)

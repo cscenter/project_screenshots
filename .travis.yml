@@ -4,7 +4,5 @@ python:
 install:
   - pip2.7 install -r requirements.txt
 script:
-  - ls
-  - ls tests
-  - ls tests/unit
   - nosetests tests/unit
+  - nosetests -s tests/regression

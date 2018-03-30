@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cscenter/project_screenshots.svg?branch=master)](https://travis-ci.org/cscenter/project_screenshots)
+
 # project_screenshots
 Репозиторий для проекта "Аномалии на скриншотах поисковых страниц"
 

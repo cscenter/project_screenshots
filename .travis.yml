@@ -4,4 +4,6 @@ python:
 install:
   - pip2.7 install -r requirements.txt
 script:
+  - ls
+  - ls project_screenshots
   - nosetests tests/unit

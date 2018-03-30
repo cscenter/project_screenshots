@@ -6,8 +6,4 @@
 * ./research: experimental code.
 * ./puppepteer: scripts for puppeteer.
 * ./src: library source root.
-
-## running tests
-
-Run ```./run_unit.sh``` in src  
-Run ```./run_regression.sh``` in src
+* ./test: unit and regression tests.

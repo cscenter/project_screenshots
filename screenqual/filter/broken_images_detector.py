@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import math, random
-from screenshot_analyser import ScreenshotAnalyser
+from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 
 class BrokenImagesAnalyser(ScreenshotAnalyser):
 
@@ -9,10 +9,10 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
         img = screenshot.image
         # Image pre-processing
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        ret, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY)
+        ret, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         f, contours, h = cv2.findContours(thresh, 1, 2)
         w, h, _ = img.shape
-        min_area = w * h / 200
+        min_area = w * h * 0.002
         for cnt in contours:
             approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
             if len(approx) == 4:

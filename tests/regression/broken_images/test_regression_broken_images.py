@@ -4,32 +4,37 @@ import cv2
 from screenqual.filter.broken_images_detector import BrokenImagesAnalyser
 from screenqual.core.screenshot import Screenshot
 from tests.regression.precision_recall_calculator import PrecisionRecallCalculator
+from tests import DATA_ROOT
 import os
+from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
 
+class TestRegressionBrokenImages(unittest.TestCase):
+    def process_path(self, path, is_positive, detector, pr_calculator):
+        filenames = glob(path + "*.png")
+        for filename in filenames:
+            img = cv2.imread(filename)
+            screenshot = Screenshot(img, None, None, [])
+            pr_calculator.expected(is_positive).found(detector.execute(screenshot))
 
-class TestRegressionTextNearEdgeDetector(unittest.TestCase):
-    def test_fscore_is_over_random(self):
-        base_path = os.path.join(os.path.dirname(__file__))
-        pr_calculator = PrecisionRecallCalculator()
+    def process_paths(self, positive_paths, negative_paths, detector, pr_calculator):
+        for path in positive_paths:
+            self.process_path(path, True, detector, pr_calculator)
 
-        # estimate on negative
-        filenames = glob(base_path + "/imgs/good/*.png")
+        for path in negative_paths:
+            self.process_path(path, False, detector, pr_calculator)
+
+    def test_fscore_on_desktop_text_documents(self):
+        positive_paths = [
+            DATA_ROOT + "/broken_imgs/bad/"
+        ]
+
+        negative_paths = [
+            DATA_ROOT + "/broken_imgs/good/"
+        ]
+
+        pr_calculator = PrecisionRecallCalculator("broken images detector:")
         bia = BrokenImagesAnalyser()
-        for path in filenames:
-            img = cv2.imread(path)
-            screenshot = Screenshot(img, path.rstrip(".png"), path, [])
-            pr_calculator.expected(False).found(bia.execute(screenshot))
+        self.process_paths(positive_paths, negative_paths, bia, pr_calculator)
 
-        # estimate on positive
-        filenames = glob(base_path + "/imgs/bad/*.png")
-        bia = BrokenImagesAnalyser()
-        for path in filenames:
-            img = cv2.imread(path)
-            screenshot = Screenshot(img, path, path, [])
-            pr_calculator.expected(True).found(bia.execute(screenshot))
-
-        print("Statistics for {0}".format(self.__class__.__name__))
-        print("-" * len("Statistics for {0}".format(self.__class__.__name__)))
-        print("{0:20s}: {1:.5f}".format("Precision: ", pr_calculator.precision()))
-        print("{0:20s}: {1:.5f}".format("Recall: ", pr_calculator.recall()))
-        print("{0:20s}: {1:.5f}".format("FScore: ", pr_calculator.fscore()))
+        print(pr_calculator)
+        self.assertTrue(pr_calculator.fscore() > .88)

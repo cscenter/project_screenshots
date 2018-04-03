@@ -1,19 +1,31 @@
 class AnalyserResult:
-    def __init__(self, has_anomaly, analyser_type=None, description=None):
+    def __init__(self, has_anomaly, info=None):
         self.has_anomaly = has_anomaly
-        self.analyser_type = analyser_type
-        self.description = description
+        if info:
+            self.info = info
+        else:
+            self.info = {}
+
+    @staticmethod
+    def with_anomaly(info=None):
+        return AnalyserResult(True, info)
+
+    @staticmethod
+    def without_anomaly(info=None):
+        return AnalyserResult(False, info)
+
+    def update_info(self, key, value):
+        self.info[key] = value
 
     def __nonzero__(self):
         return self.has_anomaly
 
     def __str__(self):
-        result = str(self.analyser_type)
+        result = ""
         if self.has_anomaly:
-            result += " detected the anomaly on the screenshot"
-            if self.description:
-                result += " : " + str(self.description)
-            result += "\n"
+            result += "Detected the anomaly on the screenshot\n"
         else:
-            result += " did not detect the anomaly on the screenshot\n"
+            result += "Did not detect the anomaly on the screenshot\n"
+        if self.info:
+            result += "Additional info: " + str(self.info) + "\n"
         return result

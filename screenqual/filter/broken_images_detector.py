@@ -1,12 +1,10 @@
 import numpy as np
 import cv2
-import math, random
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
 
 class BrokenImagesAnalyser(ScreenshotAnalyser):
-
     def execute(self, screenshot):
         img = screenshot.image
         # Image pre-processing
@@ -30,6 +28,6 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
                     rect = img[y_vals[1] + 5:y_vals[2] - 5, x_vals[1] + 5:x_vals[2] - 5]
                     colour_arr = np.full(rect.shape, base_colour)
                     if np.all(rect == colour_arr):
-                        return AnalyserResult(True, self.__class__.__name__)
-        return AnalyserResult(False, self.__class__.__name__)
+                        return AnalyserResult.with_anomaly()
+        return AnalyserResult.without_anomaly()
 

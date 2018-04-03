@@ -22,6 +22,6 @@ class TextNearEdgeDetector(ScreenshotAnalyser):
         tail = row_sums[-self.frame_height:]
         has_text_near_edge = max(np.max(head), np.max(tail)) > self.tolerance * median_row_sum
         if has_text_near_edge:
-            return AnalyserResult(True, self.__class__.__name__, "Horizontal border crosses the text")
+            return AnalyserResult.with_anomaly({"cause": "Horizontal border crosses the text"})
         else:
-            return AnalyserResult(False, self.__class__.__name__)
+            return AnalyserResult.without_anomaly()

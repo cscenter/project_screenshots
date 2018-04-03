@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import cv2
 import numpy as np
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
+from screenqual.core.analyser_result import AnalyserResult
 
 
 class TextNearEdgeDetector(ScreenshotAnalyser):
@@ -20,4 +20,8 @@ class TextNearEdgeDetector(ScreenshotAnalyser):
         median_row_sum = np.median(row_sums[row_sums > min_pixels_in_line])
         head = row_sums[:self.frame_height]
         tail = row_sums[-self.frame_height:]
-        return max(np.max(head), np.max(tail)) > self.tolerance * median_row_sum
+        has_text_near_edge = max(np.max(head), np.max(tail)) > self.tolerance * median_row_sum
+        if has_text_near_edge:
+            return AnalyserResult(True, self.__class__.__name__, "Horizontal border crosses the text")
+        else:
+            return AnalyserResult(False, self.__class__.__name__)

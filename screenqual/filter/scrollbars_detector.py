@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
+from screenqual.core.analyser_result import AnalyserResult
 
 # Extract only vertical lines that may be vertical scrollbars
 def vertical_lines(lines, height, width):
@@ -60,16 +61,20 @@ class ScrollBarAnalyser(ScreenshotAnalyser):
         edges = cv2.Canny(gray, 50, 200, apertureSize=3)
         minLineLength = 200
         maxLineGap = 40
-        lines = cv2.HoughLinesP(edges,1,np.pi/180,100,minLineLength,maxLineGap)
+        lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 100, minLineLength, maxLineGap)
         # No lines were detected
         if lines is None:
-            return False
+            return AnalyserResult(False, self.__class__.__name__, "Couldn't detect lines")
         height, width = edges.shape
-        is_scrollbars = False
-        if check_if_horizontal(lines, height, width):
-            screenshot.result.append("Horizontal scrollbar detected")
-            is_scrollbars = True
-        if check_if_vertical(lines, height, width):
-            screenshot.result.append("Vertical scrollbar detected")
-            is_scrollbars = True
-        return is_scrollbars
+
+        has_horizontal_scrollbars = check_if_horizontal(lines, height, width)
+        has_vertical_scrollbars = check_if_vertical(lines, height, width)
+
+        if not has_horizontal_scrollbars and not has_vertical_scrollbars:
+            return AnalyserResult(False, self.__class__.__name__)
+        elif has_horizontal_scrollbars and not has_vertical_scrollbars:
+            return AnalyserResult(True, self.__class__.__name__, "Horizontal scrollbars detected")
+        elif not has_horizontal_scrollbars and has_vertical_scrollbars:
+            return AnalyserResult(True, self.__class__.__name__, "Vertical scrollbars detected")
+        else:
+            return AnalyserResult(True, self.__class__.__name__, "Both horizontal and vertical scrollbars detected")

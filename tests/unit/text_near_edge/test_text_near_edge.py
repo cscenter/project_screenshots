@@ -14,12 +14,12 @@ class TestTextNearEdgeDetector(unittest.TestCase):
         path = self.base_path + "/ok.png"
         print(path)
         img = cv2.imread(path)
-        screenshot = Screenshot(img, None, None, None)
+        screenshot = Screenshot(img)
         self.assertFalse(dtor.execute(screenshot))
 
     def test_fires_on_bad_text_document_screenshots(self):
         dtor = TextNearEdgeDetector()
         path = self.base_path + "/text_on_edge.png"
         img = cv2.imread(path)
-        screenshot = Screenshot(img, None, None, None)
+        screenshot = Screenshot(img)
         self.assertTrue(dtor.execute(screenshot), "Failed at {0}".format(path))

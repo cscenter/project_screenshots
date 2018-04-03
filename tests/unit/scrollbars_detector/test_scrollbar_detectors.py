@@ -30,4 +30,4 @@ class TestScrollBarAnalyser(unittest.TestCase):
     def _analyze(self, relative_path):
         base_path = os.path.join(os.path.dirname(__file__))
         img = cv2.imread(base_path + "/" + relative_path)
-        return ScrollBarAnalyser().execute(Screenshot(img, None, None, []))
+        return ScrollBarAnalyser().execute(Screenshot(img))

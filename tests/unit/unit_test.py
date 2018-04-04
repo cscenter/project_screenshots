@@ -5,8 +5,11 @@ import cv2
 
 from screenqual.core.screenshot import Screenshot
 
+
 # Base class for all unit tests run on different filters
+
 class UnitTest(unittest.TestCase):
+
     def assert_has_anomaly(self, analyser, relative_path):
         self.assertTrue(self._analyze(analyser, relative_path).has_anomaly)
 

@@ -1,6 +1,5 @@
 class Screenshot(object):
-    def __init__(self, image, html, meta_information, result):
+    def __init__(self, image, html=None, meta_information=None):
         self.image = image
         self.html = html
-        self.meta_infrormation = meta_information
-        self.result = result
+        self.meta_information = meta_information

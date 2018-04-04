@@ -1,8 +1,7 @@
-import unittest
 from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
 from tests.regression.regression_test import TestRegression
 
-class TestRegressionTextNearEdgeDetector(unittest.TestCase, TestRegression):
+class TestRegressionTextNearEdgeDetector(TestRegression):
 
     def test_fscore_on_desktop_text_documents(self):
         self.fscore(["/document_screenshots_cut/desktop/text/"],

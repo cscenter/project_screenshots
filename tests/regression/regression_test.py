@@ -4,18 +4,18 @@ from screenqual.core.screenshot import Screenshot
 from tests.regression.precision_recall_calculator import PrecisionRecallCalculator
 import os
 import warnings
+import unittest
 
-class TestRegression:
 
+class TestRegression(unittest.TestCase):
     def process_path(self, path, has_anomaly, detector, pr_calculator, extension):
         filenames = glob(path + "*." + extension)
         if len(filenames) == 0:
             warnings.warn("No files found at " + path, UserWarning)
         for filename in filenames:
             img = cv2.imread(filename)
-            screenshot = Screenshot(img, None, None, [])
+            screenshot = Screenshot(img)
             pr_calculator.expected(has_anomaly).found(detector.execute(screenshot))
-
 
     def fscore(self, paths_with_anomaly, paths_without_anomaly,
                filter, f_score, pr_calculator_name,

@@ -13,15 +13,15 @@ class TestBrokenImagesDetector(unittest.TestCase):
         bia = BrokenImagesAnalyser()
 
         img1 = cv2.imread(self.base_path + "/imgs/ok/1.png")
-        screenshot1 = Screenshot(img1, None, None, None)
+        screenshot1 = Screenshot(img1)
         self.assertFalse(bia.execute(screenshot1))
 
         img2 = cv2.imread(self.base_path + "/imgs/ok/2.png")
-        screenshot2 = Screenshot(img2, None, None, None)
+        screenshot2 = Screenshot(img2)
         self.assertFalse(bia.execute(screenshot2))
 
     def test_fires_on_screenshots_with_bad_images(self):
         bia = BrokenImagesAnalyser()
         img = cv2.imread(self.base_path + "/imgs/not_ok/1.png")
-        screenshot = Screenshot(img, None, None, [])
+        screenshot = Screenshot(img)
         self.assertTrue(bia.execute(screenshot))

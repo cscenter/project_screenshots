@@ -1,7 +1,7 @@
 
 
 class PrecisionRecallCalculator:
-    def __init__(self, test_name="sample_test"):
+    def __init__(self, test_name="regression test"):
         self.true_positive = 0.
         self.true_negative = 0.
         self.false_positive = 0.

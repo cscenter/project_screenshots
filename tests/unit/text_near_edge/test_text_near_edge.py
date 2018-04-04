@@ -1,25 +1,15 @@
-import unittest
-import cv2
 from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
-from screenqual.core.screenshot import Screenshot
-import os
+from tests.unit.unit_test import UnitTest
 
 
-class TestTextNearEdgeDetector(unittest.TestCase):
+class TestTextNearEdgeDetector(UnitTest):
     def setUp(self):
-        self.base_path = os.path.join(os.path.dirname(__file__))
+        self.dtor = TextNearEdgeDetector()
 
     def test_does_not_fire_on_good_text_document_screenshots(self):
-        dtor = TextNearEdgeDetector()
-        path = self.base_path + "/ok.png"
-        print(path)
-        img = cv2.imread(path)
-        screenshot = Screenshot(img, None, None, None)
-        self.assertFalse(dtor.execute(screenshot))
+        self.assert_no_anomaly(self.dtor,
+                               "text_near_edge/ok.png")
 
     def test_fires_on_bad_text_document_screenshots(self):
-        dtor = TextNearEdgeDetector()
-        path = self.base_path + "/text_on_edge.png"
-        img = cv2.imread(path)
-        screenshot = Screenshot(img, None, None, None)
-        self.assertTrue(dtor.execute(screenshot), "Failed at {0}".format(path))
+        self.assert_has_anomaly(self.dtor,
+                                "text_near_edge/text_on_edge.png")

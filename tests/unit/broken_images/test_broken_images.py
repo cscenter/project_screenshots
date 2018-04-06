@@ -4,7 +4,7 @@ from tests.unit.unit_test import UnitTest
 
 class TestBrokenImagesDetector(UnitTest):
     def setUp(self):
-        self.set_analyser(BrokenImagesAnalyser())
+        self.analyser = BrokenImagesAnalyser()
 
     def test_does_not_fire_on_good_screenshots(self):
         self.assert_no_anomaly("broken_images/imgs/ok/1.png")

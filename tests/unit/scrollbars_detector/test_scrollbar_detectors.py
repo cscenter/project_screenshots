@@ -4,7 +4,7 @@ from tests.unit.unit_test import UnitTest
 
 class TestScrollBarAnalyser(UnitTest):
     def setUp(self):
-        self.set_analyser(ScrollBarAnalyser())
+        self.analyser = ScrollBarAnalyser()
 
     def test_does_not_fire_on_good_screenshots(self):
         self.assert_no_anomaly('scrollbars_detector/imgs/without_scrollbars/1.png')

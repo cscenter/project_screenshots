@@ -4,7 +4,7 @@ from tests.unit.unit_test import UnitTest
 
 class TestTextNearEdgeDetector(UnitTest):
     def setUp(self):
-        self.set_analyser(TextNearEdgeDetector())
+        self.analyser = TextNearEdgeDetector()
 
     def test_does_not_fire_on_good_text_document_screenshots(self):
         self.assert_no_anomaly("text_near_edge/ok.png")

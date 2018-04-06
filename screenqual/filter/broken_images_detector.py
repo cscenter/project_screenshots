@@ -10,6 +10,8 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
         # Image pre-processing
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY)
+        kernel = np.ones((3, 3), np.uint8)
+        thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations = 1)
         f, contours, h = cv2.findContours(thresh, 1, 2)
         w, h, _ = img.shape
         min_area = w * h * 0.002

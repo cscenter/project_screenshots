@@ -5,7 +5,7 @@ const fs        = require('fs')
 const screenshot_extension  = '.jpg';
 const output_directory_name = 'image_with_and_without_banner_v2/';
 const path_to_resources = output_directory_name+'resources/';
-const file_resources_name = 'coordinates_of_banners.json';
+const file_resources_name = 'coordinates_of_documents.json';
 const border_width = 10;
 const fixed_resolution      = {"width": 360,"height": 1250}; // comment this line to scroll to the end of the page before taking the screenshot
 

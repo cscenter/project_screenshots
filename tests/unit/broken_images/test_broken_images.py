@@ -12,3 +12,4 @@ class TestBrokenImagesDetector(UnitTest):
 
     def test_fires_on_screenshots_with_bad_images(self):
         self.assert_has_anomaly("broken_images/imgs/not_ok/1.png")
+        self.assert_has_anomaly("broken_images/imgs/not_ok/google2.png")

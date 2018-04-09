@@ -4,27 +4,32 @@ from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
 
-# seeks the maximum consecutive range of values, that are greater than eps
-def find_max_stroke(column, eps):
+def _find_stroke(column_it, column_size, eps):
+    coord = column_it.coords[0]
+    if column_it.next() > eps:
+        length = 1
+        while column_it.index < column_size - 1 and column_it.next() > eps:
+            length += 1
+        return length, coord, coord + length
+
+
+def _find_strokes(column_it, column_size, eps):
+    strokes = []
+    while column_it.index < column_size:
+        strokes.append(_find_stroke(column_it, column_size, eps))
+    return strokes
+
+
+def _find_max_stroke(column, eps):
     assert len(column.shape) == 1
 
-    fl = column.flat
-    # finds all consecutive ranges of values, that are greater than eps using the efficient numpy iterators
-    islands = []
-    while fl.index < column.size:
-        coord = fl.coords[0]
-        if fl.next() > eps:
-            length = 1
-            while fl.index < column.size - 1 and fl.next() > eps:
-                length += 1
-            # writes the length of the range, start and end coordinates
-            islands.append([length, coord, coord + length])
+    flat_column = column.flat
+    strokes = _find_strokes(flat_column, column.size, eps)
 
-    if not islands:
+    if not strokes:
         return None
 
-    # extracts the maximum range
-    max_stroke = sorted(islands, reverse=True)[0]
+    max_stroke = sorted(strokes, reverse=True)[0]
 
     return None if max_stroke[0] < column.size / 3 else max_stroke[1:]
 
@@ -68,7 +73,7 @@ class TextNearEdgeDetector(ScreenshotAnalyser):
 
         line_sums = np.sum(original_img, axis=1)
         min_pixels_in_line = np.percentile(line_sums, 5)
-        stroke = find_max_stroke(line_sums, min_pixels_in_line)
+        stroke = _find_max_stroke(line_sums, min_pixels_in_line)
         if stroke:
             min_y, max_y = stroke
             original_img = original_img.copy()

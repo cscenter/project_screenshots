@@ -18,9 +18,6 @@ class TestGeneralDetector(UnitTest):
     def test_fires_on_white_screenshot(self):
         self.assert_has_anomaly("general_detector/white.png")
 
-    # def test_fires_on_tiny_screenshot(self):
-    #     self.assert_has_anomaly("general_detector/tiny.png")
-
     def test_fires_on_yandex_main_screenshot(self):
         self.assert_has_anomaly("general_detector/yndx_main.png")
 

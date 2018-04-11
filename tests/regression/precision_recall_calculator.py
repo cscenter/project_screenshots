@@ -1,11 +1,12 @@
+import numpy as np
 
 
 class PrecisionRecallCalculator:
     def __init__(self, test_name="regression test"):
-        self.true_positive = 0.
-        self.true_negative = 0.
-        self.false_positive = 0.
-        self.false_negative = 0.
+        self.true_positive = 0
+        self.true_negative = 0
+        self.false_positive = 0
+        self.false_negative = 0
         self.test_name = test_name
 
     # expected: bool
@@ -26,35 +27,35 @@ class PrecisionRecallCalculator:
 
     def recall(self):
         if self.true_positive + self.false_negative == 0:
-            return None
+            return np.inf
         else:
-            return self.true_positive / (self.true_positive + self.false_negative)
+            return float(self.true_positive) / (self.true_positive + self.false_negative)
 
     def precision(self):
         if self.true_positive + self.false_positive == 0:
-            return None
+            return np.inf
         else:
-            return self.true_positive / (self.true_positive + self.false_positive)
+            return float(self.true_positive) / (self.true_positive + self.false_positive)
 
     def fscore(self):
         p = self.precision()
         r = self.recall()
         if not p or not r:
-            return None
+            return np.inf
         else:
-            return 2 * p * r / (p + r)
+            return 2. * p * r / (p + r)
 
     def __str__(self):
         str = \
         "Statistics for {0}\n".format(self.test_name) +\
         "-" * len(self.test_name) + "\n" +\
-        "{0:20s}: {1:.5f}\n".format("Precision: ",        self.precision()) +\
-        "{0:20s}: {1:.5f}\n".format("Recall: ",           self.recall()) +\
-        "{0:20s}: {1:.5f}\n".format("FScore: ",           self.fscore()) +\
-        "{0:20s}: {1:.5f}\n".format("True positive: ", self.true_positive) +\
-        "{0:20s}: {1:.5f}\n".format("True negative: ", self.true_negative) +\
-        "{0:20s}: {1:.5f}\n".format("False positive: ", self.false_positive) +\
-        "{0:20s}: {1:.5f}\n".format("False negative: ", self.false_negative)
+        "{0:20s}: {1:.5f}\n".format("Precision ",        self.precision()) +\
+        "{0:20s}: {1:.5f}\n".format("Recall ",           self.recall()) +\
+        "{0:20s}: {1:.5f}\n".format("FScore ",           self.fscore()) +\
+        "{0:20s}: {1:d}\n".format("True positive ",    self.true_positive) +\
+        "{0:20s}: {1:d}\n".format("True negative ",    self.true_negative) +\
+        "{0:20s}: {1:d}\n".format("False positive ",   self.false_positive) +\
+        "{0:20s}: {1:d}\n".format("False negative ",   self.false_negative)
 
         return str
 

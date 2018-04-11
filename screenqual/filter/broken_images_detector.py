@@ -9,9 +9,9 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
     def __check_the_same_color(self, img, x, y, h, w, not_roi):
         # Choose some pixel in the center as a base colour
         base_colour = img[y + int(h / 2)][x + int(w / 2)]
-        rect = img[y:y + h, x :x + w]
+        rect = img[y:y + h, x:x + w]
         colour_arr = np.full(rect.shape, base_colour)
-        check_arr = np.all(rect == colour_arr, axis = 2)
+        check_arr = np.all(rect == colour_arr, axis=2)
         if np.all(np.logical_or(check_arr, not_roi)):
             return True
         return False
@@ -43,11 +43,9 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
                     w = x_vals[2] - x_vals[1]
                     x_val = x_vals[1]
                     y_val = y_vals[1]
-                    not_roi = thresh[y_val:y_val+h, x_val:x_val + w] > 0
+                    not_roi = thresh[y_val:y_val + h, x_val:x_val + w] > 0
                     if self.__check_the_same_color(
                             img, x_val, y_val, h, w, not_roi):
-                        cv2.drawContours(img, [cnt], 0, (0, 255, 0), 3)
-                        cv2.imwrite("th.png", img)
                         return AnalyserResult.with_anomaly()
             x_bound, y_bound, w_bound, h_bound = cv2.boundingRect(approx)
             area_bound = w_bound * h_bound
@@ -59,7 +57,5 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
                 # pixel on round edge
                 if self.__check_the_same_color(
                         img, x_bound, y_bound, h_bound, w_bound, not_roi):
-                    cv2.drawContours(img, [approx], 0, (0, 255, 0), 3)
-                    cv2.imwrite("th.png", thresh)
                     return AnalyserResult.with_anomaly()
         return AnalyserResult.without_anomaly()

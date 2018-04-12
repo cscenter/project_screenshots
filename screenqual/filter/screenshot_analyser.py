@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+import os
+import screenqual
 
 
 class ScreenshotAnalyser:

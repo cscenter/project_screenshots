@@ -1,14 +1,16 @@
-from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
-from screenqual.core.analyser_result import AnalyserResult
-from util.neural_network import model_classify
-import cv2
 import os
+import cv2
+
+from research.banner_classification.lib.neural_network import model_classify
+from screenqual.core.analyser_result import AnalyserResult
+from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 
 
 class BannerAnalyser(ScreenshotAnalyser):
     def __init__(self):
         super(ScreenshotAnalyser, self).__init__()
-        path_to_model = os.path.join(os.path.dirname(__file__), "../../util/model/weights_sign.hdf5")
+        path_to_model = os.path.join(os.path.dirname(__file__),
+                                     "../../research/banner_classification/lib/model/weights_sign.hdf5")
         self.model = model_classify()
         self.model.load_weights(path_to_model)
 

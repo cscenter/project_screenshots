@@ -2,7 +2,6 @@ from glob import glob
 import cv2
 from screenqual.core.screenshot import Screenshot
 from tests.regression.precision_recall_calculator import PrecisionRecallCalculator
-from tests.regression import ENABLE_RESULT_LOG
 import os
 import warnings
 import unittest

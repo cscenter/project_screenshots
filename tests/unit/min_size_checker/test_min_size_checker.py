@@ -2,7 +2,7 @@ from screenqual.filter.min_size_checker import MinSizeChecker
 from tests.unit.unit_test import UnitTest
 
 
-class TestGeneralDetector(UnitTest):
+class TestMinSizeChecker(UnitTest):
     def setUp(self):
         self.analyser = MinSizeChecker()
 

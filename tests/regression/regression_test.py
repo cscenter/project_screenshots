@@ -5,17 +5,41 @@ from tests.regression.precision_recall_calculator import PrecisionRecallCalculat
 import os
 import warnings
 import unittest
+import inspect
+
+
+def _append_result(results, expected, found, path):
+    if expected and found:
+        results.append("TP:: " + path)
+    elif not expected and found:
+        results.append("FP:: " + path)
+    elif expected and not found:
+        results.append("FN:: " + path)
+    else:
+        results.append("TN:: " + path)
 
 
 class TestRegression(unittest.TestCase):
+    def setUp(self):
+        self.results = []
+
+    def tearDown(self):
+        log_filename = os.path.splitext(inspect.getfile(self.__class__))[0] + "_" + self._testMethodName + ".log"
+        with open(log_filename, "w") as log_file:
+            for result in sorted(self.results):
+                log_file.write(result + os.linesep)
+
     def process_path(self, path, has_anomaly, detector, pr_calculator, extension):
         filenames = glob(path + "*." + extension)
         if len(filenames) == 0:
             warnings.warn("No files found at " + path, UserWarning)
+
         for filename in filenames:
             img = cv2.imread(filename)
             screenshot = Screenshot(img)
-            pr_calculator.expected(has_anomaly).found(detector.execute(screenshot))
+            got_value = detector.execute(screenshot)
+            _append_result(self.results, has_anomaly, got_value, filename)
+            pr_calculator.expected(has_anomaly).found(got_value)
 
     def fscore(self, paths_with_anomaly, paths_without_anomaly,
                filter, f_score, pr_calculator_name,

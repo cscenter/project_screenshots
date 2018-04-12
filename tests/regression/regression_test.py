@@ -10,15 +10,14 @@ import inspect
 
 
 def _append_result(results, expected, found, path):
-    if ENABLE_RESULT_LOG:
-        if expected and found:
-            results.append("TP:: " + path)
-        elif not expected and found:
-            results.append("FP:: " + path)
-        elif expected and not found:
-            results.append("FN:: " + path)
-        else:
-            results.append("TN:: " + path)
+    if expected and found:
+        results.append("TP:: " + path)
+    elif not expected and found:
+        results.append("FP:: " + path)
+    elif expected and not found:
+        results.append("FN:: " + path)
+    else:
+        results.append("TN:: " + path)
 
 
 class TestRegression(unittest.TestCase):
@@ -26,11 +25,10 @@ class TestRegression(unittest.TestCase):
         self.results = []
 
     def tearDown(self):
-        if ENABLE_RESULT_LOG:
-            log_filename = os.path.splitext(inspect.getfile(self.__class__))[0] + "_" + self._testMethodName + ".log"
-            with open(log_filename, "w") as log_file:
-                for result in sorted(self.results):
-                    log_file.write(result + os.linesep)
+        log_filename = os.path.splitext(inspect.getfile(self.__class__))[0] + "_" + self._testMethodName + ".log"
+        with open(log_filename, "w") as log_file:
+            for result in sorted(self.results):
+                log_file.write(result + os.linesep)
 
     def process_path(self, path, has_anomaly, detector, pr_calculator, extension):
         filenames = glob(path + "*." + extension)

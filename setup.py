@@ -5,5 +5,6 @@ setup(
     version="1.0.0",
     description="Quality of SERP Screenshots",
     packages=find_packages(exclude=("tests",)),
-    install_requires=['numpy', 'opencv-python']
+    install_requires=['numpy', 'opencv-python'],
+    include_package_data=True
 )

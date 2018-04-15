@@ -5,5 +5,6 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - nosetests tests/unit
-  - nosetests -s tests/regression
+  - python -V
+  - python -m "nose" tests/unit
+  - python -m "nose" -s tests/regression

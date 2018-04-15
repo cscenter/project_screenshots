@@ -13,10 +13,10 @@ class UnitTest(unittest.TestCase):
         return self.analyser
 
     def assert_has_anomaly(self, relative_path):
-        self.assertTrue(self._analyze(self._get_analyser(), relative_path).has_anomaly)
+        self.assertTrue(self._analyze(self._get_analyser(), relative_path))
 
     def assert_no_anomaly(self, relative_path):
-        self.assertFalse(self._analyze(self._get_analyser(), relative_path).has_anomaly)
+        self.assertFalse(self._analyze(self._get_analyser(), relative_path))
 
     def _analyze(self, analyser, relative_path):
         base_path = os.path.join(os.path.dirname(__file__))

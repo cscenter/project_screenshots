@@ -1,8 +1,10 @@
 language: python
 python:
   - "2.7"
+  - "3.6"
 install:
-  - pip2.7 install -r requirements.txt
+  - pip install -r requirements.txt
 script:
-  - nosetests tests/unit
-  - nosetests -s tests/regression
+  - python -V
+  - python -m "nose" tests/unit
+  - python -m "nose" -s tests/regression

@@ -4,27 +4,19 @@ from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
 
-def _find_stroke(column_it, column_size, eps):
-    coord = column_it.coords[0]
-    if column_it.next() > eps:
-        length = 1
-        while column_it.index < column_size - 1 and column_it.next() > eps:
-            length += 1
-        return length, coord, coord + length
+def _find_strokes(column, eps):
+    thresholded = np.concatenate(([False], column > eps, [False])).astype(int)
+    starts = np.where((thresholded[1:] - thresholded[:-1]) > 0)[0]
+    ends   = np.where((thresholded[1:] - thresholded[:-1]) < 0)[0]
 
-
-def _find_strokes(column_it, column_size, eps):
-    strokes = []
-    while column_it.index < column_size:
-        strokes.append(_find_stroke(column_it, column_size, eps))
+    strokes = zip(ends - starts, starts, ends)
     return strokes
 
 
 def _find_max_stroke(column, eps):
     assert len(column.shape) == 1
 
-    flat_column = column.flat
-    strokes = _find_strokes(flat_column, column.size, eps)
+    strokes = _find_strokes(column, eps)
 
     if not strokes:
         return None
@@ -34,7 +26,7 @@ def _find_max_stroke(column, eps):
     return None if max_stroke[0] < column.size / 3 else max_stroke[1:]
 
 
-def exp_decay(shape):
+def _exp_decay(shape):
     assert len(shape) == 2, "Only 2-dimensional mat is supported"
     edges_matrix = np.ones(shape, np.uint8)
     edges_matrix[[0, -1], :] = 0
@@ -55,7 +47,7 @@ class TextNearEdgeDetector(ScreenshotAnalyser):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         img_max_intensity = np.percentile(img, 99)
         img = img_max_intensity - img[..., 2]
-        decay_mask = exp_decay(img.shape)
+        decay_mask = _exp_decay(img.shape)
         decayed_img = np.multiply(img, decay_mask)
         has_text_near_horizontal_edge = self._check_horizontal_edges(img, decayed_img)
         has_text_near_vertical_edge   = self._check_vertical_edges(img, decayed_img)

@@ -9,7 +9,7 @@ setup(
     include_data_files=True,
     setup_requires=['setuptools_git >= 0.3', ],
     package_data={
-        '': ['*.npy', '*.txt'],
-        'screenqual': ['*.npy', '*.txt']
+        '': ['*'],
+        'screenqual': ['*']
     }
 )

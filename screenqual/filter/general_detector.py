@@ -25,6 +25,9 @@ class GeneralDetector(ScreenshotAnalyser):
         spdiff[self.__spectre_indicies == 0] = 0
         sum_diff = spdiff.sum()
         if sum_diff > self.__threshold:
-            return AnalyserResult.with_anomaly({"spectre diff": sum_diff, "expected spectre diff": self.__threshold})
+            return AnalyserResult.with_anomaly({
+                "spectre diff": sum_diff,
+                "expected spectre diff": self.__threshold.item(0)
+            })
 
         return AnalyserResult.without_anomaly()

@@ -1,3 +1,4 @@
+import json
 import os
 import unittest
 
@@ -21,4 +22,9 @@ class UnitTest(unittest.TestCase):
     def _analyze(self, analyser, relative_path):
         base_path = os.path.join(os.path.dirname(__file__))
         img = cv2.imread(base_path + "/" + relative_path)
-        return analyser.execute(Screenshot(img))
+        result = analyser.execute(Screenshot(img))
+        self._assert_json_serializable(result.info)
+        return result
+
+    def _assert_json_serializable(self, obj):
+        json.dumps(obj)

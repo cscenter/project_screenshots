@@ -17,9 +17,10 @@ class AnalyserResult:
     def update_info(self, key, value):
         self.info[key] = value
 
-    # def __bool__(self):  # Python 3.x
-    # def __nonzero__(self):  # Python 2.x
-    def __len__(self):  # Crosspythonic
+    def __bool__(self):  # Python 3.x
+        return self.__nonzero__()
+
+    def __nonzero__(self):  # Python 2.x
         return self.has_anomaly
 
     def __str__(self):

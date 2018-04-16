@@ -7,6 +7,6 @@ setup(
     packages=find_packages(exclude=("tests",)),
     install_requires=['numpy', 'opencv-python'],
     package_data={
-        '': ['*']
+        '': ['*.*']
     }
 )

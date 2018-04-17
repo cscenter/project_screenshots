@@ -7,7 +7,7 @@ import os
 
 
 class GeneralDetector(ScreenshotAnalyser):
-    def __init__(self, threshold=1000):
+    def __init__(self, threshold=1200):
         path2models = os.path.join(os.path.dirname(screenqual.__file__), "models")
         self.__avg_spectre = np.load(       os.path.join(path2models, "general_detector", "avg_spectre.npy"))
         self.__spectre_indicies = np.load(  os.path.join(path2models, "general_detector", "spectre_indices.npy"))

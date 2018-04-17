@@ -7,11 +7,11 @@ import os
 
 
 class GeneralDetector(ScreenshotAnalyser):
-    def __init__(self):
+    def __init__(self, threshold=1000):
         path2models = os.path.join(os.path.dirname(screenqual.__file__), "models")
         self.__avg_spectre = np.load(       os.path.join(path2models, "general_detector", "avg_spectre.npy"))
         self.__spectre_indicies = np.load(  os.path.join(path2models, "general_detector", "spectre_indices.npy"))
-        self.__threshold = np.loadtxt(      os.path.join(path2models, "general_detector", "threshold.txt"))
+        self.__threshold = threshold
 
         assert self.__avg_spectre.shape == self.__spectre_indicies.shape, "wrong model"
 

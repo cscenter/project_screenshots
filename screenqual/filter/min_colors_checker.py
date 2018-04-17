@@ -13,5 +13,4 @@ class MinColorsChecker(ScreenshotAnalyser):
         bins = np.bincount(img.flat)
         bins = bins[bins > img.size * 1e-5]
         info = {"found colors": bins.size}
-        print(bins.size)
         return AnalyserResult.with_anomaly(info) if bins.size < self.min_colors else AnalyserResult.without_anomaly(info)

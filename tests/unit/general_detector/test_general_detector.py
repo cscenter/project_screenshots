@@ -15,6 +15,9 @@ class TestGeneralDetector(UnitTest):
     def test_does_not_fire_on_white_areas(self):
         self.assert_no_anomaly("general_detector/lotofwhite.png")
 
+    def test_does_not_fire_on_mobile(self):
+        self.assert_no_anomaly("general_detector/mobile.jpg")
+
     def test_does_not_fire_on_yandex_main_screenshot(self):
         self.assert_no_anomaly("general_detector/yndx_main.png")
 

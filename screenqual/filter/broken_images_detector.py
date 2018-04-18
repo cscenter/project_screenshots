@@ -46,16 +46,17 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
         thresh = cv2.dilate(thresh, kernel)
         _, contours, _ = cv2.findContours(thresh, cv2.RETR_LIST, cv2.INTERSECT_FULL)
         w, h = img.shape[:2]
-        min_area = w * h * 0.002
+        min_area = w * h * 0.001
+        max_area = w * h * 0.5
         for cnt in contours:
             approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
-            # A rectangular case
-            if len(approx) == 4:
-                area = cv2.contourArea(approx)
-                if area >= min_area:
+            area = cv2.contourArea(approx)
+            if min_area <= area <= max_area:
+                # A rectangular case
+                if len(approx) == 4:
                     if self._is_rectangular_broken_image(approx, img, thresh):
                         return AnalyserResult.with_anomaly()
-            # Rectangular with round edges case
-            if self._is_cnt_broken_images_with_round_edges(approx, img, thresh):
-                return AnalyserResult.with_anomaly()
+                # Rectangular with round edges case
+                if self._is_cnt_broken_images_with_round_edges(approx, img, thresh):
+                    return AnalyserResult.with_anomaly()
         return AnalyserResult.without_anomaly()

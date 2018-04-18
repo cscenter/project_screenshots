@@ -18,6 +18,12 @@ class TestGeneralDetector(UnitTest):
     def test_does_not_fire_on_mobile(self):
         self.assert_no_anomaly("general_detector/mobile.jpg")
 
+    def test_does_not_fire_on_google(self):
+        self.assert_no_anomaly("general_detector/google.png")
+
+    def test_does_not_fire_on_long(self):
+        self.assert_no_anomaly("general_detector/long1.png")
+
     def test_does_not_fire_on_yandex_main_screenshot(self):
         self.assert_no_anomaly("general_detector/yndx_main.png")
 
@@ -26,6 +32,9 @@ class TestGeneralDetector(UnitTest):
 
     def test_fires_on_white_screenshot(self):
         self.assert_has_anomaly("general_detector/white.png")
+
+    def test_fires_on_white_twitter(self):
+        self.assert_has_anomaly("general_detector/85sj2.png")
 
     def test_fires_on_checkerboard(self):
         self.assert_has_anomaly("general_detector/checkers.png")

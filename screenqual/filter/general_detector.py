@@ -7,7 +7,7 @@ import os
 
 
 class GeneralDetector(ScreenshotAnalyser):
-    def __init__(self, threshold=1000):
+    def __init__(self, threshold=1200):
         path2models = os.path.join(os.path.dirname(screenqual.__file__), "models")
         self.__avg_spectre = np.load(       os.path.join(path2models, "general_detector", "avg_spectre.npy"))
         self.__spectre_indicies = np.load(  os.path.join(path2models, "general_detector", "spectre_indices.npy"))
@@ -24,6 +24,7 @@ class GeneralDetector(ScreenshotAnalyser):
         spdiff = np.abs(magnitude_spectrum - self.__avg_spectre)
         spdiff[self.__spectre_indicies == 0] = 0
         sum_diff = spdiff.sum()
+        # print sum_diff
         if sum_diff > self.__threshold:
             return AnalyserResult.with_anomaly({
                 "spectre diff": sum_diff,

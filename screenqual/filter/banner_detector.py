@@ -26,5 +26,5 @@ class BannerAnalyser(ScreenshotAnalyser):
         banner_probability = self.model.predict(img)[0]
         is_banner = banner_probability.argmax(axis=0)
         if is_banner:
-            return AnalyserResult.with_anomaly({"probability": banner_probability[1]})
-        return AnalyserResult.without_anomaly({"probability": banner_probability[0]})
+            return AnalyserResult.with_anomaly() #{"probability": banner_probability[1]})
+        return AnalyserResult.without_anomaly() #{"probability": banner_probability[0]})

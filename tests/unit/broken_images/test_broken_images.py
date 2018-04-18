@@ -23,4 +23,3 @@ class TestBrokenImagesDetector(UnitTest):
 
     def test_fires_on_screenshots_with_round_corners_images(self):
         self.assert_has_anomaly("broken_images/imgs/not_ok/google1.png")
-

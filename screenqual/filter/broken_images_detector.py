@@ -46,7 +46,7 @@ class BrokenImagesAnalyser(ScreenshotAnalyser):
         thresh = cv2.dilate(thresh, kernel)
         _, contours, _ = cv2.findContours(thresh, cv2.RETR_LIST, cv2.INTERSECT_FULL)
         w, h = img.shape[:2]
-        min_area = w * h * 0.001
+        min_area = w * h * 0.0015
         max_area = w * h * 0.5
         for cnt in contours:
             approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)

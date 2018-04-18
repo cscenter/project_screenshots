@@ -12,6 +12,9 @@ class TestBrokenImagesDetector(UnitTest):
     def test_does_not_fire_on_good_screenshots_2(self):
         self.assert_no_anomaly("broken_images/imgs/ok/2.png")
 
+    def test_does_not_fire_on_good_screenshots_with_areas_similar_to_imgs(self):
+        self.assert_no_anomaly("broken_images/imgs/ok/3.png")
+
     def test_does_not_fire_on_good_screenshots_without_any_images(self):
         self.assert_no_anomaly("broken_images/imgs/ok/4.png")
 

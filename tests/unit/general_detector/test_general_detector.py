@@ -33,6 +33,9 @@ class TestGeneralDetector(UnitTest):
     def test_fires_on_white_screenshot(self):
         self.assert_has_anomaly("general_detector/white.png")
 
+    def test_fires_on_white_twitter(self):
+        self.assert_has_anomaly("general_detector/85sj2.png")
+
     def test_fires_on_checkerboard(self):
         self.assert_has_anomaly("general_detector/checkers.png")
 

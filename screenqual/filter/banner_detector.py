@@ -10,7 +10,7 @@ class BannerAnalyser(ScreenshotAnalyser):
     def __init__(self):
         super(ScreenshotAnalyser, self).__init__()
         path_to_model = os.path.join(os.path.dirname(__file__),
-                                     "../models/banner_classification/weights_sign.hdf5")
+                                     "../models/banner_classification/weights_sign1.hdf5")
         self.model = model_classify()
         self.model.load_weights(path_to_model)
 

@@ -44,9 +44,9 @@ class ClippedDocumentDetector(ScreenshotAnalyser):
     def execute(self, screenshot):
         img = screenshot.image
         assert img.shape[0] > 2 * self.frame_height, "Img is too narrow (height is {0} pixels)".format(img.shape[0])
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)[..., 2]
         img_max_intensity = np.percentile(img, 99)
-        img = img_max_intensity - img[..., 2]
+        img = img_max_intensity - img
         decay_mask = _exp_decay(img.shape)
         decayed_img = np.multiply(img, decay_mask)
         has_text_near_horizontal_edge = self._check_horizontal_edges(img, decayed_img)

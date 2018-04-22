@@ -35,7 +35,7 @@ def _exp_decay(shape):
     return 1 / np.exp(np.minimum(distance_transform.astype(np.float32), 30.))
 
 
-class TextNearEdgeDetector(ScreenshotAnalyser):
+class ClippedDocumentDetector(ScreenshotAnalyser):
     tolerance = 0.2
     frame_height = 10
     line_eps = 10

@@ -42,5 +42,4 @@ class BrokenVideosAnalyser(ScreenshotAnalyser):
                                   bounding_rect.x_upper_left:bounding_rect.x_bottom_right]) < \
                             self.__threshold:
                         return AnalyserResult.with_anomaly()
-
         return AnalyserResult.without_anomaly()

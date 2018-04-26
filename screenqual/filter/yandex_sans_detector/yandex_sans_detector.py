@@ -18,17 +18,17 @@ class YandexSansDetector(ScreenshotAnalyser):
 
     def execute(self, screenshot):
         img = cv2.cvtColor(screenshot.image, cv2.COLOR_BGR2GRAY)
-        letters = extract_letters(extract_patches(img), 28)
-        thresh = 700
+        letters = extract_letters(extract_patches(img)[:3], 28)
+        thresh = 640
         checked_at_least_one = False
         for k in self.__model:
             if k in letters:
                 checked_at_least_one = True
-                if (letters[k] == self.__model[k]).sum() < thresh:
-                     return AnalyserResult.with_anomaly("mismatch at letter {0}".format(k.encode("utf-8")))
-        if checked_at_least_one:
-            return AnalyserResult.without_anomaly()
-        else:
-            return AnalyserResult.without_anomaly({"warning": "Couldn't fine a letter to compare against"})
+                difference = (letters[k] == self.__model[k]).sum()
+                if difference < thresh:
+                     return AnalyserResult.with_anomaly("mismatch at letter {0} is {1}".format(k.encode("utf-8"), difference))
+                else:
+                    return AnalyserResult.without_anomaly()
+        return AnalyserResult.without_anomaly({"warning": "Couldn't fine a letter to compare against"})
 
 

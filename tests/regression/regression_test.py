@@ -10,13 +10,13 @@ import inspect
 
 def _append_result(results, expected, found, path):
     if expected and found:
-        results.append("TP:: " + path)
+        results.append("TP:: " + path + "..." + str(found))
     elif not expected and found:
-        results.append("FP:: " + path)
+        results.append("FP:: " + path + "..." + str(found))
     elif expected and not found:
-        results.append("FN:: " + path)
+        results.append("FN:: " + path + "..." + str(found))
     else:
-        results.append("TN:: " + path)
+        results.append("TN:: " + path + "..." + str(found))
 
 
 class TestRegression(unittest.TestCase):
@@ -43,7 +43,7 @@ class TestRegression(unittest.TestCase):
 
     def fscore(self, paths_with_anomaly, paths_without_anomaly,
                filter, f_score, pr_calculator_name,
-               extension = "png"):
+               extension="png"):
         DATA_ROOT = os.path.join(os.path.dirname(__file__), "../..", "data")
         paths_with_anomaly = [DATA_ROOT + el for el in paths_with_anomaly]
         paths_without_anomaly = [DATA_ROOT + el for el in paths_without_anomaly]

@@ -13,4 +13,7 @@ class MinVariationChecker(ScreenshotAnalyser):
         img = np.sum(img, axis=2, dtype=np.uint32)
         variation = np.var(img)
         info = {"variation": variation}
-        return AnalyserResult.with_anomaly(info) if variation < self.__min_variation else AnalyserResult.without_anomaly(info)
+        if variation < self.__min_variation:
+            return AnalyserResult.with_anomaly(info)
+        else:
+            return AnalyserResult.without_anomaly(info)

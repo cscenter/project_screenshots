@@ -1,16 +1,15 @@
 import numpy as np
 import cv2
 import screenqual
-from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
-from screenqual.util.rectangle import Rectangle
 import os
-import math
+from screenqual.filter.broken_areas_analyser import BrokenAreasAnalyser
 
 
-class BrokenVideosAnalyser(ScreenshotAnalyser):
+class BrokenVideosAnalyser(BrokenAreasAnalyser):
 
     def __init__(self):
+        super(BrokenVideosAnalyser, self).__init__()
         path2models = os.path.join(os.path.dirname(screenqual.__file__), "models")
         self.__mean_hist = np.load(os.path.join(path2models, "broken_videos", "model.npy"))
         self.__threshold = np.loadtxt(os.path.join(path2models, "broken_videos", "threshold.txt"))
@@ -27,19 +26,14 @@ class BrokenVideosAnalyser(ScreenshotAnalyser):
         ret, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY)
         _, contours, _ = cv2.findContours(thresh, cv2.RETR_LIST, cv2.INTERSECT_FULL)
         w, h = img.shape[:2]
-        min_area = w * h * 0.002
+        min_area = self._get_min_area(w, h)
+        max_area = self._get_max_area(w, h)
         for cnt in contours:
             approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
-            if len(approx) == 4:
+            if self._is_cnt_rect(approx):
                 area = cv2.contourArea(approx)
-                if area >= min_area:
-                    x_vals = approx[:, 0, 0]
-                    y_vals = approx[:, 0, 1]
-                    bounding_rect = Rectangle(x=x_vals.min() + 5, y=y_vals.min() + 5,
-                                              w=x_vals.max() - x_vals.min() - 10,
-                                              h=y_vals.max() - y_vals.min() - 10)
-                    if self._dist(gray[bounding_rect.y_upper_left:bounding_rect.y_bottom_right,
-                                  bounding_rect.x_upper_left:bounding_rect.x_bottom_right]) < \
-                            self.__threshold:
+                if min_area <= area <= max_area:
+                    bounding_rect = self._get_rect_from_cnt(approx)
+                    if self._dist(self._cut_rectangle_from_img(gray, bounding_rect)) < self.__threshold:
                         return AnalyserResult.with_anomaly()
         return AnalyserResult.without_anomaly()

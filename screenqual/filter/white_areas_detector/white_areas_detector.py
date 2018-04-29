@@ -2,8 +2,6 @@ import numpy as np
 import cv2
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
-from screenqual.util.rectangle import Rectangle
-
 
 class WhiteAreasAnalyser(ScreenshotAnalyser):
 
@@ -86,9 +84,9 @@ class WhiteAreasAnalyser(ScreenshotAnalyser):
         all_white = (thresh == 0).sum()
         white_area = float(max_sq) / all_white
         white_area_info = {
-            "max_sq": max_sq,
-            "max_h": max_h,
-            "max_w": max_w,
+            "max_sq": int(max_sq),
+            "max_h": int(max_h),
+            "max_w": int(max_w),
             "max_w_idx": max_w_idx,
             "max_h_idx": max_h_idx,
             "white_area_ratio": white_area

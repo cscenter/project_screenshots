@@ -43,7 +43,7 @@ class TestRegression(unittest.TestCase):
 
     def fscore(self, paths_with_anomaly, paths_without_anomaly,
                filter, f_score, pr_calculator_name,
-               extension = "png"):
+               extension="png"):
         DATA_ROOT = os.path.join(os.path.dirname(__file__), "../..", "data")
         paths_with_anomaly = [DATA_ROOT + el for el in paths_with_anomaly]
         paths_without_anomaly = [DATA_ROOT + el for el in paths_without_anomaly]

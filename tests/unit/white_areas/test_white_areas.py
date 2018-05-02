@@ -2,7 +2,7 @@ from screenqual.filter.white_areas_detector.white_areas_detector import WhiteAre
 from tests.unit.unit_test import UnitTest
 
 
-class TestBrokenImagesDetector(UnitTest):
+class TestWhiteAreasDetector(UnitTest):
     def setUp(self):
         self.analyser = WhiteAreasAnalyser(max_white_area=0.3)
 

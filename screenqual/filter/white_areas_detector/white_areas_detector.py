@@ -3,10 +3,43 @@ import cv2
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
+
 class WhiteAreasAnalyser(ScreenshotAnalyser):
 
     def __init__(self, max_white_area=0.5):
         self.__max_white_area = max_white_area
+
+    class DpElementInfo():
+        def __init__(self):
+            self.__height = 0
+            self.__width = 0
+            self.__no_white_rect = -1
+
+        def assign_rect_start(self):
+            self.__height = 0
+            self.__width = 0
+
+        def get_width(self):
+            return self.__width
+
+        def get_height(self):
+            return self.__height
+
+        def set_width(self, width):
+            self.__width = width
+
+        def set_height(self, height):
+            self.__height = height
+
+        def set_no_white_rect(self):
+            self.__height = self.__no_white_rect
+            self.__width = self.__no_white_rect
+
+        def is_width_no_white(self):
+            return self.__width != self.__no_white_rect
+
+        def is_height_no_white(self):
+            return self.__height != self.__no_white_rect
 
     def execute(self, screenshot):
         img = screenshot.image
@@ -22,35 +55,34 @@ class WhiteAreasAnalyser(ScreenshotAnalyser):
         kernel = np.ones((20, 20), np.uint8)
         thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
         thresh = cv2.dilate(thresh, kernel)
-        dp = np.zeros((h, w, 2), dtype=int)
+        dp = np.ones((h, w), dtype=self.DpElementInfo)
+        for i in range(h):
+            for j in range(w):
+                dp[i, j] = self.DpElementInfo()
         no_white_rect = -1
-        max_width_idx = 0
-        max_height_idx = 1
+
         # Filing the initial states for dp
         if thresh[0, 0] != 0:
-            dp[0, 0][max_width_idx] = no_white_rect
-            dp[0, 0, 1] = no_white_rect
+            dp[0, 0].set_width(no_white_rect)
+            dp[0, 0].set_height(no_white_rect)
 
         for i in range(1, w):
             if thresh[0, i] == 0:
-                if dp[0, i - 1, max_width_idx] != no_white_rect:
-                    dp[0, i, max_width_idx] = dp[0, i - 1, max_width_idx] + 1
+                if dp[0, i - 1].is_width_no_white():
+                    dp[0, i].set_width(dp[0, i - 1].get_width() + 1)
                 else:
-                    dp[0, i, max_width_idx] = 0
-                    dp[0, i, max_height_idx] = 0
+                    dp[0, i].assign_rect_start()
             else:
-                dp[0, i, max_width_idx] = no_white_rect
-                dp[0, i, max_height_idx] = no_white_rect
+                dp[0, i].set_no_white_rect()
+
         for i in range(1, h):
             if thresh[i, 0] == 0:
-                if dp[i, 0, max_height_idx] != no_white_rect:
-                    dp[i, 0, max_height_idx] = dp[i - 1, 0, max_height_idx] + 1
+                if dp[i, 0].is_height_no_white():
+                    dp[i, 0].set_height(dp[i - 1, 0].get_height() + 1)
                 else:
-                    dp[i, 0, max_width_idx] = 0
-                    dp[i, 0, max_height_idx] = 0
+                    dp[i, 0].assign_rect_start()
             else:
-                dp[i, 0, max_width_idx] = no_white_rect
-                dp[i, 0, max_height_idx] = no_white_rect
+                dp[i, 0].set_no_white_rect()
 
         max_sq = 0
         max_h = 0
@@ -58,29 +90,27 @@ class WhiteAreasAnalyser(ScreenshotAnalyser):
         max_w_idx = 0
         max_h_idx = 0
         # Dynamic for every pixel store the largest rectangle finishing in it
-        for i in range(h):
-            for j in range(w):
+        for i in range(1, h):
+            for j in range(1, w):
                 if thresh[i, j] == 0:
-                    if dp[i - 1, j, max_height_idx] != no_white_rect and \
-                            dp[i, j - 1, max_width_idx] != no_white_rect:
-                        dp[i, j, max_width_idx] = min(dp[i, j - 1, max_width_idx] + 1,
-                                                      dp[i - 1, j - 1, max_width_idx] + 1)
-                        dp[i, j, max_height_idx] = min(dp[i - 1, j, max_height_idx] + 1,
-                                                       dp[i - 1, j - 1, max_height_idx] + 1)
+                    if dp[i - 1, j].is_height_no_white() and dp[i, j - 1].is_width_no_white():
+                        dp[i, j].set_width(min(dp[i, j - 1].get_width() + 1,
+                                               dp[i - 1, j - 1].get_width() + 1))
+                        dp[i, j].set_height(min(dp[i - 1, j].get_height() + 1,
+                                                dp[i - 1, j - 1].get_height() + 1))
 
-                        cur_sq = dp[i, j, max_width_idx] * dp[i, j, max_height_idx]
+                        cur_sq = dp[i, j].get_width() * dp[i, j].get_height()
                         if cur_sq > max_sq:
                             max_sq = cur_sq
-                            max_h = dp[i, j, max_height_idx]
-                            max_w = dp[i, j, max_width_idx]
+                            max_h = dp[i, j].get_height()
+                            max_w = dp[i, j].get_width()
                             max_w_idx = j
                             max_h_idx = i
                     else:
-                        dp[i, j, max_width_idx] = 0
-                        dp[i, j, max_height_idx] = 0
+                        dp[i, j].assign_rect_start()
                 else:
-                    dp[i, j, max_width_idx] = no_white_rect
-                    dp[i, j, max_height_idx] = no_white_rect
+                    dp[i, j].set_no_white_rect()
+
         all_white = (thresh == 0).sum()
         white_area = float(max_sq) / all_white
         white_area_info = {

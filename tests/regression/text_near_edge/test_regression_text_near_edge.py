@@ -1,4 +1,4 @@
-from screenqual.filter.text_near_edge_detector import TextNearEdgeDetector
+from screenqual.filter.text_near_edge_detector_version2 import TextNearEdgeDetector
 from tests.regression.regression_test import TestRegression
 
 

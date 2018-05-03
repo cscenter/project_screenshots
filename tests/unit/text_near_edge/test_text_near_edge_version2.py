@@ -30,7 +30,6 @@ class TestTextNearEdgeDetectorVersion2(UnitTest):
     def test_does_not_fire_on_text_document_screenshot_with_picture_crossing_vertical_line(self):
         self.assert_has_anomaly("text_near_edge/8_3.png")
 
-    # сомнительный пример, что тут нет аномалии
     # def test_does_not_fire_on_text_document_screenshot_with_one_letter_near_vertical_line(self):
     #     self.assert_no_anomaly("text_near_edge/8_4_4.png")
 

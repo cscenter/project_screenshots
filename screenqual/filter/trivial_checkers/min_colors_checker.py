@@ -4,7 +4,9 @@ import numpy as np
 
 
 class MinColorsChecker(ScreenshotAnalyser):
-    min_colors = 4
+    def __init__(self, min_colors=4):
+        super(MinColorsChecker, self).__init__()
+        self.__min_colors = min_colors
 
     def execute(self, screenshot):
         img = screenshot.image
@@ -13,4 +15,4 @@ class MinColorsChecker(ScreenshotAnalyser):
         bins = np.bincount(img.flat)
         bins = bins[bins > img.size * 1e-5]
         info = {"found colors": bins.size}
-        return AnalyserResult.with_anomaly(info) if bins.size < self.min_colors else AnalyserResult.without_anomaly(info)
+        return AnalyserResult.with_anomaly(info) if bins.size < self.__min_colors else AnalyserResult.without_anomaly(info)

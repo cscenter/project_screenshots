@@ -2,6 +2,8 @@
 import cv2
 import numpy as np
 import os
+import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.models import load_model
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
@@ -57,7 +59,7 @@ class YandexSansVsArialDetector(ScreenshotAnalyser):
         undecided = np.sum(np.logical_and(preds[:, 0] > self.__lower_det_thresh, preds[:, 0] <= self.__upper_det_thresh))
         ys = np.sum(preds[:, 0] > self.__upper_det_thresh)
 
-        info = {"ys": ys, "notys": notys, "undecided": undecided}
+        info = {"ys": int(ys), "notys": int(notys), "undecided": int(undecided)}
         print(info)
         # print(np.median(preds, axis=0))
         if max(ys, notys) > undecided:

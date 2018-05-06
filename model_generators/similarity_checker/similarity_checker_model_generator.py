@@ -1,21 +1,5 @@
-# -*- coding: utf-8 -*-
-'''
-Данный скрипт вычисляет модель для сравнения скриншотов с коллекцией.
-
-Запуск: python similarity_checker_model_generator.py absolute_path_to_collection file_extension_preceeded_with_dot
-
-Результат: файлы со средним спектром коллеции и с индексами, необходимыми для сравнения, предлагаемое значение порога.
-
-Известные проблемы:
-1. предлагаемое значение порога может быть завышенным, что приведёт к увеличению количества FN.
-Предлагается провести эксперименты на большой коллекции для точного определения порога,
-2. относительно высокая требовательность к ресурсам.
-
-'''
-
-
-
 from model_generator import ModelGenerator
+from screenqual.filter.similarity_checkers.similarity_checker import generate_spectrum
 import cv2
 import numpy as np
 from glob import glob
@@ -24,21 +8,12 @@ import sys
 from random import shuffle
 
 
-def _generate_spectrum(img_bgr, shape_cols_first):
-    img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
-    img = cv2.resize(img, shape_cols_first)
-    spectrum = np.fft.fft2(img)
-    fshift = np.fft.fftshift(spectrum)
-    magnitude_spectrum = np.log(1 + np.abs(fshift))
-    return magnitude_spectrum
-
-
 def _save_spectrum(avg_spectrum, spectrum_indices):
     output_directory = os.path.join(os.path.join(os.path.dirname(__file__), "similarity_checker_model"))
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
-    np.save(os.path.join(output_directory, "avg_spectrum.npy"), avg_spectrum)
-    np.save(os.path.join(output_directory, "spectrum_indices.npy"), spectrum_indices)
+    np.save("avg_spectrum.npy", avg_spectrum)
+    np.save("spectrum_indices.npy", spectrum_indices)
     return os.path.abspath(output_directory)
 
 
@@ -50,14 +25,17 @@ def _estimate_threshold(spectra, avg_spectrum, spectrum_indices):
 
 
 class SimilarityCheckerModelGenerator(ModelGenerator):
-    '''
-    spectrum_shape -- целевой размер для даунскейла. Чем он больше, тем дольше всё будет считать, но, вероятно, точнее.
-    Разумно выбирать его пропорциональным размеру скриншота. Сначала указана ширина, затем высота.
-    use_percentile -- какой процент значений спектра с минимальной вариацией использовать. Чем он меньше, тем больше оверфиттимся на
-    конкретную коллекцию. Оптимальные значения находятся в интервале 0.1 ... 15 в зависимости от потребностей.
-    train_split -- какую часть использовать для вычисления среднего спектра. Остальное идёт на вычисление порога.
-    '''
     def __init__(self, spectrum_shape=(300, 600), use_percentile=0.3, train_split=0.7):
+        """
+        spectrum_shape -- target downscale size. The greater this size, the more accurate comparisons you get,
+            in expense of increased computational time.
+            It would be wise to choose this size to be proportional to the size of the screenshot.
+            The first value of a tuple is the width, and the second one is the height.
+        use_percentile -- sets the percentile of spectrum values with minimal variation will be used in spectra comparisons.
+            The lower the percentile, the greater is the overfitting on the training collection. Optimal values are in range 0.1 ... 15.
+            Choose the appropriate value for your needs.
+        train_split -- sets the percent of the data to be used for training. The other part is used for the threshold estimation.
+        """
         self.__spectrum_shape = spectrum_shape
         self.__use_percentile = use_percentile
         self.__train_split = train_split
@@ -76,7 +54,7 @@ class SimilarityCheckerModelGenerator(ModelGenerator):
             if i % 20 == 0:
                 print("Processed {} files out of {}...".format(i, len(filenames)))
             img_bgr = cv2.imread(filename, cv2.IMREAD_COLOR)
-            spectra.append(_generate_spectrum(img_bgr, self.__spectrum_shape))
+            spectra.append(generate_spectrum(img_bgr, self.__spectrum_shape))
         spectra = np.dstack(spectra)
         print("Aggregating results...")
         split = int(spectra.shape[-1] * self.__train_split)
@@ -96,7 +74,7 @@ class SimilarityCheckerModelGenerator(ModelGenerator):
 
 if __name__ == "__main__":
     model_generator = SimilarityCheckerModelGenerator()
-    path2data = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/fullpage_train/"))]
+    path2data = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data/fullpage_train/"))]
     extensions = [".png"]
     if len(sys.argv) > 2:
         path2data = [sys.argv[1]]

@@ -5,7 +5,7 @@ from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
 
-def _generate_spectrum(img_bgr, shape_cols_first):
+def generate_spectrum(img_bgr, shape_cols_first):
     img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
     img = cv2.resize(img, shape_cols_first)
     spectrum = np.fft.fft2(img)
@@ -38,7 +38,7 @@ class SimilarityChecker(ScreenshotAnalyser):
         spectrum_indices = self._spectrum_indices()
         threshold = self._threshold()
 
-        magnitude_spectrum = _generate_spectrum(screenshot.image, avg_spectrum.shape[::-1])
+        magnitude_spectrum = generate_spectrum(screenshot.image, avg_spectrum.shape[::-1])
         spdiff = np.abs(magnitude_spectrum - avg_spectrum)
         spdiff[spectrum_indices == 0] = 0
         sum_diff = spdiff.sum()

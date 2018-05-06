@@ -35,3 +35,4 @@ class TestTextNearEdgeDetector(UnitTest):
 
     def test_fires_on_text_document_screenshot_with_a_lot_of_text_near_vertical_line(self):
         self.assert_has_anomaly("text_near_edge/0_10_1.png")
+

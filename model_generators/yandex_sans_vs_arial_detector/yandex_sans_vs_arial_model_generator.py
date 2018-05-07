@@ -34,16 +34,6 @@ def _get_model(input_shape):
 
 class YandexSansVsArialModelGenerator(ModelGenerator):
     def __init__(self, target_size=(300, 300), train_split=0.8, nepochs=70):
-        """
-        spectrum_shape -- target downscale size. The greater this size, the more accurate comparisons you get,
-            in expense of increased computational time.
-            It would be wise to choose this size to be proportional to the size of the screenshot.
-            The first value of a tuple is the width, and the second one is the height.
-        use_percentile -- sets the percentile of spectrum values with minimal variation will be used in spectra comparisons.
-            The lower the percentile, the greater is the overfitting on the training collection. Optimal values are in range 0.1 ... 15.
-            Choose the appropriate value for your needs.
-        train_split -- sets the percent of the data to be used for training. The other part is used for the threshold estimation.
-        """
         self.__train_split = train_split
         self.__target_size = target_size
         self.__nepochs = nepochs

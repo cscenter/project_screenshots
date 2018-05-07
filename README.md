@@ -5,7 +5,8 @@
 
 ## project structure description
 * ./data: various datasets, containing images, html or both.
+* ./model_generators: scripts to generate models for the detectors using some train data.
 * ./research: experimental code.
 * ./puppepteer: scripts for puppeteer.
-* ./src: library source root.
+* ./screenqual: library source root.
 * ./test: unit and regression tests.

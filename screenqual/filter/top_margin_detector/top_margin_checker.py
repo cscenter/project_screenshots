@@ -6,7 +6,9 @@ import numpy as np
 
 
 class TopMarginChecker(ScreenshotAnalyser):
-    threshold = 30
+
+    def __init__(self, threshold=30):
+        self.threshold = threshold
 
     def execute(self, screenshot):
         img = screenshot.image

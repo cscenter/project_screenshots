@@ -1,4 +1,4 @@
-from screenqual.filter.min_variation_checker.min_variation_checker import MinVariationChecker
+from screenqual.filter.trivial_checkers.min_variation_checker import MinVariationChecker
 from tests.unit.unit_test import UnitTest
 
 

@@ -31,8 +31,6 @@ class TestRegression(unittest.TestCase):
 
     def process_path(self, path, has_anomaly, detector, pr_calculator, extension):
         filenames = glob(path + "*." + extension)
-        if len(filenames) == 0:
-            warnings.warn("No files found at " + path, UserWarning)
 
         for filename in filenames:
             img = cv2.imread(filename)
@@ -41,16 +39,26 @@ class TestRegression(unittest.TestCase):
             _append_result(self.results, has_anomaly, got_value, filename)
             pr_calculator.expected(has_anomaly).found(got_value)
 
+        return len(filenames)
+
     def fscore(self, paths_with_anomaly, paths_without_anomaly,
                filter, f_score, pr_calculator_name,
-               extension="png"):
+               extensions=["png"]):
         DATA_ROOT = os.path.join(os.path.dirname(__file__), "../..", "data")
         paths_with_anomaly = [DATA_ROOT + el for el in paths_with_anomaly]
         paths_without_anomaly = [DATA_ROOT + el for el in paths_without_anomaly]
         pr_calculator = PrecisionRecallCalculator(pr_calculator_name)
         for path in paths_with_anomaly:
-            self.process_path(path, True, filter, pr_calculator, extension)
+            processed = 0
+            for ext in extensions:
+                processed += self.process_path(path, True, filter, pr_calculator, ext)
+            if processed == 0:
+                warnings.warn("No files found at " + path, UserWarning)
         for path in paths_without_anomaly:
-            self.process_path(path, False, filter, pr_calculator, extension)
+            processed = 0
+            for ext in extensions:
+                processed += self.process_path(path, False, filter, pr_calculator, ext)
+            if processed == 0:
+                warnings.warn("No files found at " + path, UserWarning)
         print(pr_calculator)
         self.assertTrue(pr_calculator.fscore() > f_score)

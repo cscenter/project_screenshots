@@ -1,4 +1,4 @@
-from screenqual.filter.banner_detector import BannerAnalyser
+from screenqual.filter.banner_classification.banner_detector import BannerAnalyser
 from tests.regression.regression_test import TestRegression
 
 

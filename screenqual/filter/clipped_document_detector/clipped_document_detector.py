@@ -91,4 +91,8 @@ class ClippedDocumentDetector(ScreenshotAnalyser):
         head = decayed_line_sums[:self.frame_height]
         tail = decayed_line_sums[-self.frame_height:]
 
+<<<<<<< Updated upstream
         return max(np.max(head), np.max(tail)) > self.tolerance * median_line_sum
+=======
+        return max(np.max(head), np.max(tail)) > self.tolerance * median_line_sum
+>>>>>>> Stashed changes

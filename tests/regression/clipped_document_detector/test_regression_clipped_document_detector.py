@@ -27,9 +27,14 @@ class TestRegressionClippedDocumentDetector(TestRegression):
     def test_fscore_on_desktop_fullpage_with_header(self):
         self.fscore(["/document_screenshots_cut/desktop/fullpage/"],
                     ["/document_screenshots/desktop/fullpage/"],
-                    ClippedDocumentDetector(), .9, "clipped document detector: desktop, fullpage")
+                    ClippedDocumentDetector(), .9, "clipped fullpage detector: desktop, fullpage")
 
     def test_fscore_on_mobile_verticals_without_header(self):
         self.fscore(["/document_screenshots_cut/mobile/without_header/"],
                     ["/document_screenshots/mobile/without_header/"],
-                    ClippedDocumentDetector(), .9, "clipped document detector: mobile without header")
+                    ClippedDocumentDetector(), .9, "clipped fullpage detector: mobile without header")
+
+    def test_fscore_on_mobile_fullpage(self):
+        self.fscore(["/document_screenshots_cut/mobile/fullpage/"],
+                    ["/document_screenshots/mobile/fullpage/"],
+                    ClippedDocumentDetector(), .9, "clipped fullpage detector: mobile, fullpage")

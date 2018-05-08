@@ -33,10 +33,10 @@ class TestTextNearEdgeDetector(UnitTest):
     # def test_does_not_fire_on_text_document_screenshot_with_one_letter_near_vertical_line(self):
     #     self.assert_no_anomaly("text_near_edge/8_4_4.png")
 
-    def test_fires_on_text_document_screenshot_with_a_lot_of_text_near_vertical_line(self):
+    def test_on_text_document_screenshot_with_a_lot_of_text_near_vertical_line(self):
         self.assert_has_anomaly("text_near_edge/0_10_1.png")
 
-    def test_fires_on_text_fullpage_screenshot_without_header_horizontal(self):
+    def test_on_text_fullpage_screenshot_without_header_horizontal(self):
         self.assert_has_anomaly("text_near_edge/b0kpcm.png")
 
     def test_good_fullpage_screenshot(self):
@@ -45,23 +45,23 @@ class TestTextNearEdgeDetector(UnitTest):
     def test_good_fullpage_screenshot_without_header_many_img(self):
         self.assert_no_anomaly("text_near_edge/img.png")
 
-    def test_fires_on_text_fullpage_screenshot_without_header_vertical(self):
+    def test_on_text_fullpage_screenshot_without_header_vertical(self):
         self.assert_has_anomaly("text_near_edge/new_img.png")
 
-    def test_fires_on_text_fullpage_screenshot_fullpage_good(self):
+    def test_on_text_fullpage_screenshot_fullpage_good(self):
         self.assert_no_anomaly("text_near_edge/full_page.jpg")
 
-    def test_fires_on_text_fullpage_screenshot_without_header_good(self):
+    def test_on_text_fullpage_screenshot_without_header_good(self):
         self.assert_no_anomaly("text_near_edge/without_header.png")
 
-    def test_fires_on_text_fullpage_screenshot_fullpage_mobile_good(self):
+    def test_on_text_fullpage_screenshot_fullpage_mobile_good(self):
         self.assert_no_anomaly("text_near_edge/3.png")
 
-    def test_fires_on_text_fullpage_screenshot_fullpage_small_cut(self):
+    def test_on_text_fullpage_screenshot_fullpage_small_cut(self):
         self.assert_has_anomaly("text_near_edge/cut2.png")
 
-    def test_fires_on_text_fullpage_screenshot_fullpage_vertical(self):
+    def test_on_text_fullpage_screenshot_fullpage_vertical(self):
         self.assert_has_anomaly("text_near_edge/cut_img1.png")
 
-    def test_fires_on_text_fullpage_screenshot_fullpage_horizontal(self):
+    def test_on_text_fullpage_screenshot_fullpage_horizontal(self):
         self.assert_has_anomaly("text_near_edge/cut_top1.png")

@@ -90,5 +90,4 @@ class ClippedDocumentDetector(ScreenshotAnalyser):
         decayed_line_sums = np.sum(decayed_img, axis=work_axis)
         head = decayed_line_sums[:self.frame_height]
         tail = decayed_line_sums[-self.frame_height:]
-
         return max(np.max(head), np.max(tail)) > self.tolerance * median_line_sum

@@ -1,4 +1,4 @@
-from screenqual.filter.min_size_checker import MinSizeChecker
+from screenqual.filter.trivial_checkers.min_size_checker import MinSizeChecker
 from tests.unit.unit_test import UnitTest
 
 

@@ -1,4 +1,4 @@
-from screenqual.filter.min_colors_checker import MinColorsChecker
+from screenqual.filter.trivial_checkers.min_colors_checker import MinColorsChecker
 from tests.unit.unit_test import UnitTest
 
 

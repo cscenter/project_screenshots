@@ -3,7 +3,7 @@ import cv2
 import screenqual
 from screenqual.core.analyser_result import AnalyserResult
 import os
-from screenqual.filter.broken_areas_analyser import BrokenAreasAnalyser
+from screenqual.filter.broken_areas.broken_areas_analyser import BrokenAreasAnalyser
 
 
 class BrokenVideosAnalyser(BrokenAreasAnalyser):

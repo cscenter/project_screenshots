@@ -1,4 +1,4 @@
-from screenqual.filter.broken_images_detector import BrokenImagesAnalyser
+from screenqual.filter.broken_areas.broken_images_detector import BrokenImagesAnalyser
 from tests.unit.unit_test import UnitTest
 
 

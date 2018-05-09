@@ -6,13 +6,13 @@ from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 from screenqual.core.analyser_result import AnalyserResult
 
 
-def _normalize(img, min_x, max_x):
+def normalize(img, min_x, max_x):
     img = img.astype(float) - min_x
     img /= np.maximum(1, (max_x - min_x))
     return img
 
 
-def _pad(img, target_shape):
+def pad(img, target_shape):
     target_image = img
     if img.shape[0] < target_shape[0]:
         pad_width = target_shape[0] - img.shape[0]
@@ -23,7 +23,7 @@ def _pad(img, target_shape):
     return target_image
 
 
-def _area_may_contain_text(img):
+def area_may_contain_text(img):
     white_number = (np.sum(img, axis=2) > 600).sum()
     return white_number <= .95 * img.shape[0] * img.shape[1]
 
@@ -41,7 +41,7 @@ class YandexSansVsArialDetector(ScreenshotAnalyser):
 
     def execute(self, screenshot):
         img = screenshot.image
-        img = _pad(img, self.__model_input_shape)
+        img = pad(img, self.__model_input_shape)
         imgs = []
 
         for row in range(0, img.shape[0], self.__step[0]):
@@ -49,20 +49,21 @@ class YandexSansVsArialDetector(ScreenshotAnalyser):
                 h, w = self.__model_input_shape
                 if row + h <= img.shape[0] and col + w <= img.shape[1]:
                     img_cut = img[row:row + h, col:col + w]
-                    # if _area_may_contain_text(img_cut):
-                    imgs.append(_normalize(img_cut, self.__preproc_min, self.__preproc_max))
+                    # if area_may_contain_text(img_cut):
+                    imgs.append(normalize(img_cut, self.__preproc_min, self.__preproc_max))
 
         X = np.stack(imgs, axis=3)
         X = np.rollaxis(X, 3, 0)
         preds = self.__model.predict(X)
-        notys = np.sum(preds[:, 0] <= self.__lower_det_thresh)
+        number_of_non_ys_occurences = np.sum(preds[:, 0] <= self.__lower_det_thresh)
         undecided = np.sum(np.logical_and(preds[:, 0] > self.__lower_det_thresh, preds[:, 0] <= self.__upper_det_thresh))
-        ys = np.sum(preds[:, 0] > self.__upper_det_thresh)
+        number_of_ys_occurences = np.sum(preds[:, 0] > self.__upper_det_thresh)
 
-        info = {"ys": int(ys), "notys": int(notys), "undecided": int(undecided)}
-        # print(info)
-        # print(np.median(preds, axis=0))
-        if ys >= notys:
+        info = {"number_of_ys_occurences": int(number_of_ys_occurences),
+                "number_of_non_ys_occurences": int(number_of_non_ys_occurences),
+                "undecided": int(undecided)
+                }
+        if number_of_ys_occurences >= number_of_non_ys_occurences:
             return AnalyserResult.without_anomaly(info)
         else:
             return AnalyserResult.with_anomaly(info)

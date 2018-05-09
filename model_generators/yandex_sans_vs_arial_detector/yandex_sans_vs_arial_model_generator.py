@@ -10,28 +10,6 @@ import numpy as np
 import sys
 
 
-def _get_model(input_shape):
-    model = Sequential()
-    model.add(Conv2D(8, (3, 3), activation='relu', input_shape=(*input_shape, 3)))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(5, 5)))
-    model.add(Conv2D(8, (3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(5, 5)))
-    model.add(Dropout(0.05))
-
-    model.add(Conv2D(16, (3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(5, 5)))
-    model.add(Dropout(0.05))
-
-    model.add(Flatten())
-    model.add(Dense(300, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(2, activation='softmax'))
-    return model
-
-
 class YandexSansVsArialModelGenerator(ModelGenerator):
     def __init__(self, target_size=(300, 300), train_split=0.8, nepochs=70):
         self.__train_split = train_split
@@ -89,6 +67,27 @@ class YandexSansVsArialModelGenerator(ModelGenerator):
         print("Classes: ", y[:, 0].sum(), y[:, 1].sum())
         return X, y
 
+    def _get_model(self):
+        model = Sequential()
+        model.add(Conv2D(8, (3, 3), activation='relu', input_shape=(self.__target_size[0], self.__target_size[1], 3)))
+        model.add(BatchNormalization())
+        model.add(MaxPooling2D(pool_size=(5, 5)))
+        model.add(Conv2D(8, (3, 3), activation='relu'))
+        model.add(BatchNormalization())
+        model.add(MaxPooling2D(pool_size=(5, 5)))
+        model.add(Dropout(0.05))
+
+        model.add(Conv2D(16, (3, 3), activation='relu'))
+        model.add(BatchNormalization())
+        model.add(MaxPooling2D(pool_size=(5, 5)))
+        model.add(Dropout(0.05))
+
+        model.add(Flatten())
+        model.add(Dense(300, activation='relu'))
+        model.add(Dropout(0.1))
+        model.add(Dense(2, activation='softmax'))
+        return model
+
     def _compile_model(self, model):
         model.compile(loss="categorical_crossentropy",
                       optimizer="adam",
@@ -110,7 +109,7 @@ class YandexSansVsArialModelGenerator(ModelGenerator):
         imgs = self._fetch_images(paths2data, extensions)
         X, y = self._convert2numpy(imgs)
         X, y = self._shuffle_and_normalize(X, y)
-        model = _get_model(self.__target_size)
+        model = self._get_model()
         self._compile_model(model)
         self._train_model(model, X, y)
 
@@ -122,6 +121,6 @@ if __name__ == "__main__":
         path2data = [sys.argv[1]]
         extensions = [sys.argv[2]]
     else:
-        print("Path to data expected", file=sys.stderr)
+        print("Path to data expected")
         exit(1)
     model_generator.generate(path2data, extensions)

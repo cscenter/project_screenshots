@@ -2,7 +2,7 @@ from screenqual.filter.yandex_sans_vs_arial_detector.yandex_sans_vs_arial_detect
 from tests.unit.unit_test import UnitTest
 
 
-class TestScrollBarAnalyser(UnitTest):
+class TestYandexSansVsArialDetector(UnitTest):
     def setUp(self):
         self.analyser = YandexSansVsArialDetector()
 

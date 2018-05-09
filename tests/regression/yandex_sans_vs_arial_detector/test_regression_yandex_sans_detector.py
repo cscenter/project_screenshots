@@ -5,7 +5,7 @@ import random
 import unittest
 
 
-def _resize(filename, img):
+def resize(filename, img):
     fx = random.gauss(1.0, 0.3)
     fy = fx + random.gauss(0.0, 0.1)
     fx = min(max(0.5, fx), 2.0)
@@ -16,18 +16,18 @@ def _resize(filename, img):
 class TestRegressionYandexSansVsArialDetector(TestRegression):
     def test_fscore_on_ys_vs_arial_db1(self):
         self.fscore(["/ys/db1/arial/"], ["/ys/db1/ys/"],
-                    YandexSansVsArialDetector(), .9, "yandex sans detector: db1 vs arial", ["jpg"], _resize)
+                    YandexSansVsArialDetector(), .9, "yandex sans detector: db1 vs arial", ["jpg"], resize)
 
     def test_fscore_on_ys_vs_helvetica_db1(self):
         self.fscore(["/ys/db1/helvetica/"], ["/ys/db1/ys/"],
-                    YandexSansVsArialDetector(), .9, "yandex sans detector: db1 vs helvetica", ["jpg"], _resize)
+                    YandexSansVsArialDetector(), .9, "yandex sans detector: db1 vs helvetica", ["jpg"], resize)
 
     @unittest.skip("Too much for Travis CI")
     def test_fscore_on_ys_vs_arial_db2(self):
         self.fscore(["/ys/db1/arial/"], ["/ys/db1/ys/"],
-                    YandexSansVsArialDetector(), .9, "yandex sans detector: db2 vs arial", ["jpg"], _resize)
+                    YandexSansVsArialDetector(), .9, "yandex sans detector: db2 vs arial", ["jpg"], resize)
 
     @unittest.skip("Too much for Travis CI")
     def test_fscore_on_ys_vs_helvetica_db2(self):
         self.fscore(["/ys/db1/helvetica/"], ["/ys/db1/ys/"],
-                    YandexSansVsArialDetector(), .9, "yandex sans detector: db2 vs helvetica", ["jpg"], _resize)
+                    YandexSansVsArialDetector(), .9, "yandex sans detector: db2 vs helvetica", ["jpg"], resize)

@@ -43,11 +43,11 @@ def _exp_decay(shape):
 
 
 class ClippedDocumentDetector(ScreenshotAnalyser):
-    def __init__(self):
-        self.__tolerance = 0.1
+    def __init__(self, tolerance=0.1, min_pixels_in_line_ratio=0.01):
+        self.__tolerance = tolerance
         self.__frame_height = 10
         self.__line_eps = 10
-        self.__min_pixels_in_line_ratio = 0.01
+        self.__min_pixels_in_line_ratio = min_pixels_in_line_ratio
         self.__img_max_intensity = 255
         self.__threshold = 220
 

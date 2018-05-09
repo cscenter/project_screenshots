@@ -43,22 +43,19 @@ def _exp_decay(shape):
 
 
 class ClippedDocumentDetector(ScreenshotAnalyser):
-    tolerance = 0.1
-    frame_height = 10
-    line_eps = 10
-    min_pixels_in_line_ratio = 0.01
-    img_max_intensity = 255
-    threshold = 220
-    img = None
+    def __init__(self):
+        self.__tolerance = 0.1
+        self.__frame_height = 10
+        self.__line_eps = 10
+        self.__min_pixels_in_line_ratio = 0.01
+        self.__img_max_intensity = 255
+        self.__threshold = 220
 
     def execute(self, screenshot):
-        self.img = screenshot.image
-        assert self.img.shape[0] > 2 * self.frame_height, "Img is too narrow (height is {0} pixels)".format(self.img.shape[0])
+        img_brightness = cv2.cvtColor(screenshot.image, cv2.COLOR_BGR2HSV)[:, :, 2]
 
-        img_brightness = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)[:, :, 2]
-
-        img_brightness[img_brightness > self.threshold] = self.img_max_intensity
-        img_brightness = self.img_max_intensity - img_brightness
+        img_brightness[img_brightness > self.__threshold] = self.__img_max_intensity
+        img_brightness = self.__img_max_intensity - img_brightness
         decay_mask = _exp_decay(img_brightness.shape)
         decayed_img = np.multiply(img_brightness, decay_mask)
 
@@ -90,13 +87,13 @@ class ClippedDocumentDetector(ScreenshotAnalyser):
         return self._check_edges(original_img, decayed_img, 0)
 
     def _check_fuller(self, original_img):
-        line_sums = np.sum(original_img[-self.frame_height:, :], axis=0)
+        line_sums = np.sum(original_img[-self.__frame_height:, :], axis=0)
         return False if sum(line_sums == 0) else True
 
     def _check_horizontal_edges(self, img_brightness, decayed_img):
         if self._check_fuller(img_brightness):
-            img_brightness[-self.frame_height:, :] = 0
-            decayed_img[-self.frame_height:, :] = 0
+            img_brightness[-self.__frame_height:, :] = 0
+            decayed_img[-self.__frame_height:, :] = 0
         return self._check_edges(img_brightness, decayed_img, 1)
 
     def _check_edges(self, original_img, decayed_img, work_axis):
@@ -104,13 +101,13 @@ class ClippedDocumentDetector(ScreenshotAnalyser):
 
         line_sums = np.sum(original_img, axis=work_axis)
         min_pixels_in_line = np.percentile(line_sums, 5)
-        target_line_sums = line_sums[line_sums > min_pixels_in_line + self.line_eps]
+        target_line_sums = line_sums[line_sums > min_pixels_in_line + self.__line_eps]
 
         if not target_line_sums.size:
             return False
         median_line_sum = np.median(target_line_sums)
         decayed_line_sums = np.sum(decayed_img, axis=work_axis)
-        head = decayed_line_sums[:self.frame_height]
-        tail = decayed_line_sums[-self.frame_height:]
+        head = decayed_line_sums[:self.__frame_height]
+        tail = decayed_line_sums[-self.__frame_height:]
 
-        return max(np.max(head), np.max(tail)) > self.tolerance * median_line_sum
+        return max(np.max(head), np.max(tail)) > self.__tolerance * median_line_sum

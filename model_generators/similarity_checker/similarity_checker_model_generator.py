@@ -78,6 +78,6 @@ if __name__ == "__main__":
     extensions = [".png"]
     if len(sys.argv) > 2:
         path2data = [sys.argv[1]]
-        extension = [sys.argv[2]]
+        extensions = [sys.argv[2]]
 
     model_generator.generate(path2data, extensions)

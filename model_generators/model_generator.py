@@ -5,5 +5,5 @@ class ModelGenerator:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def generate(self, path2data, extension):
+    def generate(self, paths2data, extensions):
         pass

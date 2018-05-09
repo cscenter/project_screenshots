@@ -1,9 +1,9 @@
-from screenqual.filter.banner_detector.banner_detector import BannerAnalyser
+from screenqual.filter.banner_detector.banner_detector import BannerDetector
 from tests.unit.unit_test import UnitTest
 
 
 class TestBannerDetector(UnitTest):
-    analyser = BannerAnalyser()
+    analyser = BannerDetector()
 
     def test_img_with_banner_common(self):
         self.assert_has_anomaly('banner_detector/img/with_banner/2.jpg')

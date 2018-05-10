@@ -15,7 +15,8 @@ class BannerDetector(ScreenshotAnalyser):
 
     def execute(self, screenshot):
         h, w, _ = screenshot.image.shape
-        model_input_shape = tuple([1, *self.__model.layers[0].input_shape[1:]])
+        input_height, input_width, input_depth = self.__model.layers[0].input_shape[1:4]
+        model_input_shape = tuple([1, input_height, input_width, input_depth])
         img = screenshot.image
         if w > h:
             w //= 3

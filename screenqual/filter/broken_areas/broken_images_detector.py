@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from screenqual.core.analyser_result import AnalyserResult
 from screenqual.util.rectangle import Rectangle
-from screenqual.filter.broken_areas_analyser import BrokenAreasAnalyser
+from screenqual.filter.broken_areas.broken_areas_analyser import BrokenAreasAnalyser
 
 class BrokenImagesAnalyser(BrokenAreasAnalyser):
 

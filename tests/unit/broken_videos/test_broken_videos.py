@@ -1,4 +1,4 @@
-from screenqual.filter.broken_video_detector import BrokenVideosAnalyser
+from screenqual.filter.broken_areas.broken_video_detector import BrokenVideosAnalyser
 from tests.unit.unit_test import UnitTest
 
 

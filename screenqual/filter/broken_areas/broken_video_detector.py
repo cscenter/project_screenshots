@@ -8,11 +8,11 @@ from screenqual.filter.broken_areas.broken_areas_analyser import BrokenAreasAnal
 
 class BrokenVideosAnalyser(BrokenAreasAnalyser):
 
-    def __init__(self):
+    def __init__(self, threshold = 900):
         super(BrokenVideosAnalyser, self).__init__()
-        path2models = os.path.join(os.path.dirname(screenqual.__file__), "models")
-        self.__mean_hist = np.load(os.path.join(path2models, "broken_videos", "model.npy"))
-        self.__threshold = np.loadtxt(os.path.join(path2models, "broken_videos", "threshold.txt"))
+        base_path = os.path.join(os.path.dirname(__file__))
+        self.__mean_hist = np.load(os.path.join(base_path, "models", "model_broken_videos.npy"))
+        self.__threshold = threshold
 
     def _dist(self, img):
         img = cv2.resize(img, (159, 86))

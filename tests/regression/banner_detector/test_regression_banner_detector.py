@@ -5,4 +5,4 @@ from tests.regression.regression_test import TestRegression
 class TestRegressionBannerDetector(TestRegression):
     def test_fscore_banner_images(self):
         self.fscore(["/banner_detector/with_banner/"], ["/banner_detector/without_banner/"],
-                    BannerDetector(), .0, "banner_detector detector", extensions=["jpg"])
+                    BannerDetector(), .99, "banner_detector detector", extensions=["jpg"])

@@ -1,7 +1,7 @@
 import os
 import cv2
 
-from screenqual.filter.banner_detector.model.neural_network import model_classify
+from screenqual.filter.banner_detector.model.CNN_banner import model_classify
 from screenqual.core.analyser_result import AnalyserResult
 from screenqual.filter.screenshot_analyser import ScreenshotAnalyser
 

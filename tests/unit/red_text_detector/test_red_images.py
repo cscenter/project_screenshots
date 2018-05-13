@@ -2,7 +2,7 @@ from screenqual.filter.red_text_detector.red_text_detector import RedTextDetecto
 from tests.unit.unit_test import UnitTest
 
 
-class TestScrollBarAnalyser(UnitTest):
+class TestRedTextDetector(UnitTest):
     def setUp(self):
         self.analyser = RedTextDetector()
 

@@ -82,7 +82,12 @@ class RedTextDetector(ScreenshotAnalyser):
                 list_img.append([0, w_img])
 
         for h, w in zip(strokes, list_img):
-            line_sums_1 = np.sum(img_brightness[h[1]:h[2], w[1]:w[2]], axis=1)
+            try:
+                line_sums_1 = np.sum(img_brightness[h[1]:h[2], w[1]:w[2]], axis=1)
+            except Exception:
+                print(h, w)
+                print(img_brightness.shape)
+
             for stroke in _find_max_stroke(line_sums_1, 0):
                 img_red[h[1]+stroke[1]:h[1]+stroke[2], w[1]:w[2]] = 0
 

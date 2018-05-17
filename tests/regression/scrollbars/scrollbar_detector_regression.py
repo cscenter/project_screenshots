@@ -1,4 +1,4 @@
-from screenqual.filter.scrollbars_detector import ScrollBarAnalyser
+from screenqual.filter.scrollbars_detector.scrollbars_detector import ScrollBarAnalyser
 from tests.regression.regression_test import TestRegression
 
 

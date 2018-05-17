@@ -26,3 +26,6 @@ class BrokenAreasAnalyser(ScreenshotAnalyser):
 
     def _is_cnt_rect(self, cnt):
         return len(cnt) == 4
+
+    def execute(self, screenshot):
+        pass

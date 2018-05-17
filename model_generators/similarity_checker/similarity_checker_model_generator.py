@@ -1,4 +1,4 @@
-from model_generator import ModelGenerator
+from model_generators.model_generator import ModelGenerator
 from screenqual.filter.similarity_checkers.similarity_checker import generate_spectrum
 import cv2
 import numpy as np

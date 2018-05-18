@@ -12,8 +12,8 @@ def _save_spectrum(avg_spectrum, spectrum_indices):
     output_directory = os.path.join(os.path.join(os.path.dirname(__file__), "similarity_checker_model"))
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
-    np.save("avg_spectrum.npy", avg_spectrum)
-    np.save("spectrum_indices.npy", spectrum_indices)
+    np.save(os.path.join(output_directory, "avg_spectrum.npy"), avg_spectrum)
+    np.save(os.path.join(output_directory, "spectrum_indices.npy"), spectrum_indices)
     return os.path.abspath(output_directory)
 
 
@@ -49,6 +49,9 @@ class SimilarityCheckerModelGenerator(ModelGenerator):
         shuffle(filenames)
         print("Processing", os.path.join("|".join(paths2data), "*" + "|".join(extensions)))
         print("Got", len(filenames), "files")
+        if not filenames:
+            print("No data to generate model!")
+            return
         spectra = []
         for i, filename in enumerate(filenames):
             if i % 20 == 0:

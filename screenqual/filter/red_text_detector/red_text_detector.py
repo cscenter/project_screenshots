@@ -54,7 +54,7 @@ class RedTextDetector(ScreenshotAnalyser):
     def execute(self, screenshot):
         img = screenshot.image
         red_image = img[:, :, :2].sum(axis=2).astype(int)
-        red_image = red_image + 255 - img[:, :, 2]
+        red_image = red_image + self.__img_max_intensity - img[:, :, 2]
         red_image = red_image < self.__eps_red_color
 
         img_brightness = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)[:, :, 2]
